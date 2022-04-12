@@ -1,0 +1,37 @@
+.input {
+  @apply box-border block w-full border border-solid rounded-md shadow-sm;
+  @apply bg-white text-slate-800 border-slate-400;
+  @apply focus:ring-amber-500 focus:border-amber-500 focus:outline-none;
+
+  @apply dark:bg-transparent dark:text-slate-100;
+
+  font-family: inherit;
+}
+
+.input-sm {
+  @apply px-2 py-1.5 text-sm leading-4;
+}
+.input-md {
+  @apply px-2.5 py-2 text-sm;
+}
+.input-lg {
+  @apply px-3 py-2 text-base;
+}
+
+.input-label {
+  @apply text-slate-800;
+
+  @apply dark:text-slate-100;
+
+  font-family: inherit;
+}
+
+.input-label-sm {
+  @apply text-sm leading-4;
+}
+.input-label-md {
+  @apply text-sm;
+}
+.input-label-lg {
+  @apply text-base;
+}
