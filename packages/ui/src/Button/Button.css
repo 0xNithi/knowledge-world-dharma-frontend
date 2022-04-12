@@ -1,0 +1,46 @@
+.btn {
+  @apply relative inline-flex items-center space-x-2 text-center transition duration-200 ease-out border border-transparent border-solid outline-none cursor-pointer;
+  @apply rounded;
+  font-family: inherit;
+  font-weight: inherit;
+}
+
+.btn-sm {
+  @apply px-2 py-1.5 text-sm leading-4;
+}
+.btn-md {
+  @apply px-2.5 py-2 text-sm;
+}
+.btn-lg {
+  @apply px-3 py-2 text-base;
+}
+
+.btn-primary {
+  @apply text-white bg-amber-300 hover:bg-amber-200;
+  @apply dark:hover:bg-amber-400;
+}
+.dark .btn-primary {
+  text-shadow: 0px 0px 4px rgba(38 111 78 / 50%);
+}
+
+.btn-default {
+  @apply text-gray-500 bg-white border-gray-200 hover:text-gray-600;
+  @apply hover:bg-white hover:border-gray-200;
+
+  @apply dark:border-gray-600 dark:bg-gray-600 dark:text-gray-200;
+  @apply dark:hover:bg-gray-700;
+}
+.dark .btn-default {
+  text-shadow: 0px 0px 4px rgba(31 31 31 / 50%);
+}
+
+.btn-secondary {
+  @apply text-gray-600 bg-gray-200;
+  @apply hover:text-gray-700 hover:bg-gray-300;
+
+  @apply dark:text-gray-300 dark:bg-gray-500;
+  @apply dark:hover:bg-gray-600;
+}
+.dark .btn-secondary {
+  text-shadow: 0px 0px 4px rgba(42 42 42 / 50%);
+}
