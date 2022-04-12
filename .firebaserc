@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "knowledge-world-dharma"
+  },
+  "targets": {
+    "knowledge-world-dharma": {
+      "hosting": {
+        "production-web": [
+          "knowledge-world-dharma"
+        ]
+      }
+    }
+  }
+}
