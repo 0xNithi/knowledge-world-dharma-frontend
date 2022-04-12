@@ -8,10 +8,8 @@ node_modules
 # testing
 coverage
 
-# next.js
-.next/
-out/
-build
+# vite
+dist
 
 # misc
 .DS_Store
@@ -31,3 +29,6 @@ yarn-error.log*
 
 # turbo
 .turbo
+
+# firebase
+.firebase
