@@ -4,18 +4,14 @@ import PropTypes from 'prop-types';
 import './Button.css';
 
 function Button({ color, size, className, children, ...props }) {
-  const classes = ['btn'];
+  const classes = ['btn', `btn-${color}`, `btn-${size}`];
 
   if (className) {
     classes.push(className);
   }
 
   return (
-    <button
-      type="button"
-      className={[classes, `btn-${color}`, `btn-${size}`].join(' ')}
-      {...props}
-    >
+    <button type="button" className={classes.join(' ')} {...props}>
       {children}
     </button>
   );
