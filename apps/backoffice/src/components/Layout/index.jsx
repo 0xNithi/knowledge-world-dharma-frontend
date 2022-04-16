@@ -10,7 +10,9 @@ function Layout() {
       <Sidebar />
       <div className="flex flex-col w-full p-4 space-y-4">
         <Breadcumb />
-        <Outlet />
+        <div className="flex flex-col flex-auto space-y-2">
+          <Outlet />
+        </div>
       </div>
     </div>
   );
