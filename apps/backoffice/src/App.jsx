@@ -23,7 +23,7 @@ function App() {
             }
           />
           <Route
-            path="anouncement"
+            path="anouncement/*"
             element={
               <React.Suspense fallback={<>Loading...</>}>
                 <AnouncementPage />
@@ -31,7 +31,7 @@ function App() {
             }
           />
           <Route
-            path="thread"
+            path="thread/*"
             element={
               <React.Suspense fallback={<>Loading...</>}>
                 <ThreadPage />
@@ -39,7 +39,7 @@ function App() {
             }
           />
           <Route
-            path="user"
+            path="user/*"
             element={
               <React.Suspense fallback={<>Loading...</>}>
                 <UserPage />
