@@ -9,10 +9,21 @@
     "lint": "eslint \"./src/**/*.{js,jsx,ts,tsx}\" --fix"
   },
   "dependencies": {
+    "@charkour/react-reactions": "^0.8.0",
     "@kwd/eslint-config": "*",
     "@kwd/ui": "*",
+    "@reduxjs/toolkit": "^1.8.1",
+    "@tinymce/tinymce-react": "^4.0.0",
+    "@unicef/material-slate": "^0.4.6",
+    "draft-js": "^0.11.7",
+    "draftjs-to-html": "^0.9.1",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-draft-wysiwyg": "^1.14.7",
+    "react-redux": "^7.2.8",
+    "react-router-dom": "^6.3.0",
+    "slate": "^0.77.0",
+    "slate-react": "^0.77.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^1.0.7",
