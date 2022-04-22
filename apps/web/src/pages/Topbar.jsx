@@ -14,11 +14,12 @@ function Topbar(props) {
   };
   const Logout = () => {
     logoutAuth();
+    localStorage.clear();
     setShowmenu(false);
   };
   const handleKeyDown = () => {};
   return (
-    <div className="fixed w-full h-12 bg-white z-99">
+    <div className="fixed w-full h-12 bg-white ">
       <div className="flex flex-row items-center justify-between w-full full">
         <div className="w-10 h-10 my-1 ml-2">
           <img
@@ -27,7 +28,7 @@ function Topbar(props) {
             alt="logo"
           />
         </div>
-        <div className="fixed flex flex-row items-center justify-center w-full">
+        <div className="flex flex-row items-center justify-center w-full ">
           <div className="w-7/12 ml-24">
             <Input label="" placeholder="Serach hastag" />
           </div>
