@@ -8,7 +8,6 @@ function Topbar(props) {
   const [showmenu, setShowmenu] = useState(false);
   const { getUser, logoutAuth } = useAuth();
   const user = getUser();
-  console.log(user.user);
   const toggleMenuBar = () => {
     setShowmenu(!showmenu);
   };
@@ -29,7 +28,7 @@ function Topbar(props) {
           />
         </div>
         <div className="flex flex-row items-center justify-center w-full ">
-          <div className="w-7/12 ml-24">
+          <div className="w-6/12 ml-18">
             <Input label="" placeholder="Serach hastag" />
           </div>
         </div>

@@ -7,6 +7,7 @@ import Topbar from './pages/Topbar';
 import LoginModal from './pages/LoginModal';
 import SignupModal from './pages/SignupModal';
 import ProfileModal from './pages/ProfileModal';
+import EditForm from './pages/EditForm';
 import { useModal } from './stores/ModalReducer/Hook';
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/postform" element={<PostForm />} />
+          <Route path="/editform/:id" element={<EditForm />} />
           <Route path="/thredinfo/:id" element={<Threadinfo />} />
         </Routes>
       </div>

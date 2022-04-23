@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import parse from 'html-react-parser';
 import { useParams, Link } from 'react-router-dom';
 import { FacebookSelector } from '@charkour/react-reactions';
 import { useModal } from '../stores/ModalReducer/Hook';
@@ -6,35 +8,43 @@ import { useAuth } from '../stores/AuthReducer/Hook';
 
 function Threadinfo() {
   const { id } = useParams();
+
   const { showModal } = useModal();
   const [emoji, setEmoji] = useState([]);
   const { getUser } = useAuth();
   const user = getUser();
-  // const setToggleLiked = () => {
-  //   setLiked(!liked);
-  // };
-  // const handleKeyDown = () => {};
+  const [item, setItem] = useState(null);
+
+  const GetPost = async () => {
+    try {
+      const res = await axios.get(`https://localhost:44342/api/post/${id}`);
+
+      setItem(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    GetPost();
+  }, []);
   return (
     <div className="flex flex-col items-center w-3/5 h-full mt-20 bg-white rounded-md">
       <div className="flex flex-col items-center w-full">
         <div className="flex flex-row items-start w-11/12 mt-2">
-          <div className="text-xs font-medium">r/malefashionadvice</div>
+          <div className="text-xs font-medium">
+            {item && item.post.hashTag ? (
+              `/${item.post.hashTag}`
+            ) : (
+              <span>/general</span>
+            )}
+          </div>
           <div className="ml-2 text-xs text-slate-400">
-            Posted by u/aprilmayjune2 5 hours ago
+            {item && <span> Posted by </span>}
           </div>
         </div>
         <div className="w-11/12 my-5 ">
           <span className="text-sm ">
-            What are some unique aspects about yourself that has made shopping
-            for clothes challenging? For example I have arms that are shorter
-            than average..but a stocky build. So if I buy off the rack, some
-            long sleeve shirt or sweater that fits my body.. the sleeves are too
-            long for my arms or.. if I find a shirt or sweater that fits my arm
-            length well, its too tight in the body. its lead to some extra costs
-            going to the tailor also why i like summer clothes more since I dont
-            have to deal with that for short sleeves as much. my cousin has a
-            very flat nose bridge, so finding any kind of shades, glasses or any
-            other kind of eye wear that can stay up very frustrating.
+            {item ? parse(item.post.content) : <p>no content</p>}
           </span>
         </div>
       </div>
@@ -70,7 +80,9 @@ function Threadinfo() {
         </div>
         <Link to={`/thredinfo/${id}`}>
           <div className="flex flex-row items-center">
-            <span className="mr-1 text-sm">159</span>
+            <span className="mr-1 text-sm">
+              {item ? item.comments.length : 0}
+            </span>
             <span className="text-sm">Comments</span>
           </div>
         </Link>

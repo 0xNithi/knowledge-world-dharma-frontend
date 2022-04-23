@@ -6,16 +6,19 @@ export const productSlice = createSlice({
     items: [],
   },
   reducers: {
+    setItem: (state, action) => {
+      state.items = action.payload;
+    },
     addItem: (state, action) => {
       state.items.push(action.payload);
     },
     deleteItem: (state, action) => {
       state.items = state.items.filter((item) => {
-        return item.id !== action.id;
+        return item.post.id !== action.payload;
       });
     },
   },
 });
 
-export const { addItem, deleteItem } = productSlice.actions;
+export const { addItem, deleteItem, setItem } = productSlice.actions;
 export default productSlice.reducer;
