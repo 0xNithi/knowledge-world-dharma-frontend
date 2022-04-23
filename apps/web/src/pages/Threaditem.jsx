@@ -2,15 +2,14 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import parse from 'html-react-parser';
 import { Link } from 'react-router-dom';
-import { FacebookSelector } from '@charkour/react-reactions';
 import { useAuth } from '../stores/AuthReducer/Hook';
 import { useProduct } from '../stores/ProductReducer/Hook';
+import Reactions from '../Components/Reactions';
 
 function Threaditem(props) {
   const { deleteItemAction } = useProduct();
   const { getUser } = useAuth();
   const { user } = getUser();
-  const [emoji, setEmoji] = useState([]);
   const [showOption, setShowOption] = useState(false);
   const optionHandle = () => {
     setShowOption(!showOption);
@@ -49,10 +48,9 @@ function Threaditem(props) {
   };
 
   const handleKeyDown = () => {};
-  console.log(emoji);
   return (
     <div className="flex flex-col items-center w-full h-full">
-      <div className="relative flex flex-col items-center w-2/4 my-4 bg-white rounded-md">
+      <div className="relative flex flex-col items-center w-2/4 my-4 bg-white rounded-lg">
         {props.item && user && (
           <div>
             {props.item.post.userId === user.id && (
@@ -102,15 +100,15 @@ function Threaditem(props) {
         )}
         <div className="relative flex flex-col items-center w-full overflow-hidden ">
           <div className="flex flex-row items-start w-11/12 mt-2">
-            <div className="text-xs font-medium">
+            <span className="bg-green-700 text-xs font-medium text-white px-2 rounded-full">
               {props.item && props.item.post.hashTag ? (
                 `/${props.item.post.hashTag}`
               ) : (
                 <span>/general</span>
               )}
-            </div>
+            </span>
             <div className="ml-2 text-xs text-slate-400">
-              Posted by 5555 5 hours ago
+              Posted by {props.item.owner}
             </div>
           </div>
           <div className="w-11/12 mt-2 ">
@@ -122,34 +120,29 @@ function Threaditem(props) {
             {}
           </div>
         </div>
-        <div className="flex flex-row items-center justify-between w-11/12 bg-white">
+        <div className="flex flex-row items-center justify-between w-full h-10 px-1 mt-2 rounded-b-lg bg-slate-700">
           <div className="flex flex-row items-center">
-            <div className="w-5/12 my-3 cursor-pointer">
-              <FacebookSelector
-                reactions={['like']}
-                onSelect={(e) => {
-                  setEmoji(e);
-                }}
-              />
+            <div className="my-3 cursor-pointer">
+              <Reactions id={props.item.post.id} />
             </div>
-            <div className="ml-1 text-sm">
+            {/* <div className="ml-1 text-sm text-white">
               {props.item.postLikes ? (
                 props.item.postLikes.length
               ) : (
                 <p>loading...</p>
               )}
-            </div>
+            </div> */}
           </div>
           <Link to={`/thredinfo/${props.item.post && props.item.post.id}`}>
             <div className="flex flex-row items-center">
-              <span className="mr-1 text-sm">
+              <span className="mr-1 text-sm text-white">
                 {props.item.comments ? (
                   props.item.comments.length
                 ) : (
                   <p>loading...</p>
                 )}
               </span>
-              <span className="text-sm">Comments</span>
+              <span className="text-sm text-white">Comments</span>
             </div>
           </Link>
         </div>

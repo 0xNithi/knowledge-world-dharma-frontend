@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Input } from '@kwd/ui';
 
 function ProfileModal(props) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [surname, setSurname] = useState('');
+  const [givenname, setGivenname] = useState('');
   const handleKeyDown = () => {};
+  const submitHandle = () => {};
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none ">
       <div
@@ -10,12 +15,51 @@ function ProfileModal(props) {
         style={{ height: '450px', width: '650px' }}
       >
         <h3 className="text-3xl font-semibold text-black">Edit Profile</h3>
-        <div className="w-3/5">
-          <Input id="name" label="Name" type="text" placeholder="Your name" />
-        </div>
-        <div className="mt-4">
-          <Button color="primary">Edit </Button>
-        </div>
+        <form
+          className="flex flex-col items-center w-full"
+          onSubmit={submitHandle}
+        >
+          <div className="flex flex-col w-3/5 gap-1">
+            <Input
+              label="อีเมล"
+              placeholder="อีเมล"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            />
+            <Input
+              label="ชื่อ"
+              placeholder="ชื่อ"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+            />
+
+            <Input
+              label="นามสกุล"
+              placeholder="นามสกุล"
+              value={surname}
+              onChange={(e) => {
+                setSurname(e.target.value);
+              }}
+            />
+            <Input
+              label="ชื่อเล่น"
+              placeholder="ชื่อเล่น"
+              value={givenname}
+              onChange={(e) => {
+                setGivenname(e.target.value);
+              }}
+            />
+          </div>
+          <div className="mt-4">
+            <Button color="primary" type="submit">
+              Edit{' '}
+            </Button>
+          </div>
+        </form>
         <div
           className="absolute top-1 right-1 "
           onKeyPress={handleKeyDown}

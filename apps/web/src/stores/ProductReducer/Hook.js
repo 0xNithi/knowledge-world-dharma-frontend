@@ -11,7 +11,6 @@ export function useProduct() {
     dispatch(addItem(post));
   }
   function deleteItemAction(id) {
-    console.log(id);
     dispatch(deleteItem(id));
   }
   function getItem() {

@@ -7,6 +7,7 @@ function Topbar(props) {
   const { showModal } = useModal();
   const [showmenu, setShowmenu] = useState(false);
   const { getUser, logoutAuth } = useAuth();
+
   const user = getUser();
   const toggleMenuBar = () => {
     setShowmenu(!showmenu);
@@ -23,13 +24,19 @@ function Topbar(props) {
         <div className="w-10 h-10 my-1 ml-2">
           <img
             className="w-full h-full"
-            src="https://trisikkha.org/wp-content/uploads/2020/01/trisikkha-logo-1450.png"
+            src="https://i.pinimg.com/564x/96/52/27/9652275c76089ad26782344e46b3a429--islam-religion-quran.jpg"
             alt="logo"
           />
         </div>
         <div className="flex flex-row items-center justify-center w-full ">
           <div className="w-6/12 ml-18">
-            <Input label="" placeholder="Serach hastag" />
+            <Input
+              label=""
+              placeholder="Search hastag"
+              onChange={(e) => {
+                props.changeWordState(e.target.value);
+              }}
+            />
           </div>
         </div>
         <div className="relative flex flex-row items-center">

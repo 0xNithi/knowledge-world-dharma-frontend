@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useModal } from '../stores/ModalReducer/Hook';
 import { useAuth } from '../stores/AuthReducer/Hook';
 
-function Posts() {
+function Posts(props) {
   const { showModal } = useModal();
   const { getUser } = useAuth();
   const user = getUser();
@@ -30,14 +30,18 @@ function Posts() {
         <div className="flex justify-center w-2/12 mt-3 mr-2">
           <div className="h-full mb-3 xl:w-96">
             <select
+              onChange={(e) => {
+                props.changeSelectFilterState(e.target.value);
+              }}
               className="block w-full m-0 text-xs font-normal text-gray-400 transition ease-in-out bg-no-repeat border border-gray-400 border-solid rounded appearance-none bg-slate-200 form-select bg-clip-padding focus:text-gray-700 focus:bg-white "
               aria-label="Default select example"
               style={{ padding: '5px 5px' }}
             >
-              <option selected>Filter</option>
-              <option value="1">by Date</option>
-              <option value="2">by most like</option>
-              <option value="3">by comments</option>
+              <option selected value="0">
+                Filter
+              </option>
+              <option value="1">by most like</option>
+              <option value="2">by comments</option>
             </select>
           </div>
         </div>

@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { EditorState, ContentState, convertFromHTML } from 'draft-js';
-// , convertToRaw
+import {
+  EditorState,
+  ContentState,
+  convertFromHTML,
+  convertToRaw,
+} from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-// import draftToHtml from 'draftjs-to-html';
+import draftToHtml from 'draftjs-to-html';
 import { Button, Input } from '@kwd/ui';
 
 function EditForm() {
@@ -17,7 +21,7 @@ function EditForm() {
   const [title, setTitle] = useState('');
   const [hashtag, setHashtag] = useState('');
   const [hideStatus, sethideStatus] = useState(0);
-  const getPost = async () => {
+  const getPost = useCallback(async () => {
     try {
       const Token = JSON.parse(localStorage.getItem('app_user')).accessToken;
       const res = await axios.get(`https://localhost:44342/api/post/${id}`, {
@@ -33,14 +37,26 @@ function EditForm() {
       );
       setTitle(res.data.post.title);
       setHashtag(res.data.post.hashTag);
-      setHashtag(res.data.post.hideStatus);
+      sethideStatus(res.data.post.hideStatus);
       setEditorState(EditorState.createWithContent(state));
-
-      const data = {
-        title,
-        hashtag,
-        hideStatus,
-      };
+    } catch (error) {
+      console.log(error);
+    }
+  }, [id]);
+  useEffect(() => {
+    getPost();
+  }, [getPost]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const content = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+    const data = {
+      content,
+      title,
+      hashtag,
+      hideStatus: parseInt(hideStatus, 10),
+    };
+    try {
+      const Token = JSON.parse(localStorage.getItem('app_user')).accessToken;
       await axios.put(
         `https://localhost:44342/api/post/${id}`,
         JSON.stringify(data),
@@ -55,43 +71,41 @@ function EditForm() {
       console.log(error);
     }
   };
-  useEffect(() => {
-    getPost();
-  }, []);
-  const handleSubmit = () => {};
   return (
     <div className="flex flex-col items-center w-full ">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col items-center w-3/4 mt-20 bg-white rounded-md"
+        className="flex flex-col items-center justify-center w-3/4 mt-20 bg-white rounded-md"
       >
-        <Input
-          label=""
-          placeholder="Title"
-          value={title}
-          className="!w-11/12 mt-6"
-          onChange={(e) => {
-            setTitle(e.target.value);
-          }}
-        />
-        <Input
-          label=""
-          placeholder="Hashtag"
-          value={hashtag}
-          className="!w-11/12 mt-2"
-          onChange={(e) => {
-            setHashtag(e.target.value);
-          }}
-        />
-        <Input
-          label=""
-          placeholder="HideStatus"
-          value={hideStatus}
-          className="!w-11/12 mt-2"
-          onChange={(e) => {
-            sethideStatus(e.target.value);
-          }}
-        />
+        <div className="flex flex-col w-full gap-3 mt-4 ml-16 items-left">
+          <Input
+            label="หัวข้อ"
+            placeholder="หัวข้อ"
+            value={title}
+            className="!w-11/12 "
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
+          />
+          <Input
+            label="หมวดหมู่"
+            placeholder="หมวดหมู่"
+            value={hashtag}
+            className="!w-11/12"
+            onChange={(e) => {
+              setHashtag(e.target.value);
+            }}
+          />
+          <Input
+            label="สถานะ"
+            placeholder="สถานะ"
+            value={hideStatus}
+            className="!w-11/12 "
+            onChange={(e) => {
+              sethideStatus(e.target.value);
+            }}
+          />
+        </div>
         <div className="w-11/12 mt-4">
           <Editor
             editorState={editorState}
