@@ -1,6 +1,7 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import axios from 'axios';
 import { Button, Input } from '@kwd/ui';
+import axios from 'axios';
+import React, { useCallback, useEffect, useState } from 'react';
+import { BACKEND_ENDPOINT } from '../config.json';
 import { useAuth } from '../stores/AuthReducer/Hook';
 
 function ProfileModal(props) {
@@ -12,26 +13,33 @@ function ProfileModal(props) {
   const [surname, setSurname] = useState('');
   const [givenname, setGivenname] = useState('');
   const handleKeyDown = () => {};
-  const getPost = useCallback(async () => {
+  const getUserDetail = useCallback(async () => {
     try {
       const Token = JSON.parse(localStorage.getItem('app_user')).accessToken;
-      const res = await axios.get(
-        `https://localhost:44342/auth/profile/${user.id}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${Token}`,
-          },
+      const res = await axios.get(`${BACKEND_ENDPOINT}/auth/profile/`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${Token}`,
         },
-      );
+      });
+      console.log(res.data);
       setEmail(res.data.emailAddress);
       setName(res.data.username);
       setSurname(res.data.surname);
-      setGivenname(res.data.givenname);
+      setGivenname(res.data.givenName);
     } catch (error) {
       console.log(error);
     }
   }, [user.id]);
+  const handleUnregister = async (e) => {
+    e.preventDefault();
+    const Token = JSON.parse(localStorage.getItem('app_user')).accessToken;
+    await axios.delete(`${BACKEND_ENDPOINT}/auth/unregister/`, {
+      headers: {
+        Authorization: `Bearer ${Token}`,
+      },
+    });
+  };
   const submitHandle = async (e) => {
     e.preventDefault();
     const data = {
@@ -43,7 +51,7 @@ function ProfileModal(props) {
     try {
       const Token = JSON.parse(localStorage.getItem('app_user')).accessToken;
       await axios.put(
-        `https://localhost:44342/auth/editProfile/${user.id}`,
+        `${BACKEND_ENDPOINT}/auth/editProfile/${user.id}`,
         JSON.stringify(data),
         {
           headers: {
@@ -57,8 +65,8 @@ function ProfileModal(props) {
     }
   };
   useEffect(() => {
-    getPost();
-  }, [getPost]);
+    getUserDetail();
+  }, [getUserDetail]);
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none ">
       <div
@@ -72,6 +80,14 @@ function ProfileModal(props) {
         >
           <div className="flex flex-col w-3/5 gap-1">
             <Input
+              label="ชื่อผู้ใช้"
+              placeholder="ชื่อ"
+              value={username}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+            />
+            <Input
               label="อีเมล"
               placeholder="อีเมล"
               value={emailAddress}
@@ -80,14 +96,13 @@ function ProfileModal(props) {
               }}
             />
             <Input
-              label="ชื่อ"
-              placeholder="ชื่อ"
-              value={username}
+              label="ชื่อจริง"
+              placeholder="ชื่อจริง"
+              value={givenname}
               onChange={(e) => {
-                setName(e.target.value);
+                setGivenname(e.target.value);
               }}
             />
-
             <Input
               label="นามสกุล"
               placeholder="นามสกุล"
@@ -96,18 +111,17 @@ function ProfileModal(props) {
                 setSurname(e.target.value);
               }}
             />
-            <Input
-              label="ชื่อเล่น"
-              placeholder="ชื่อเล่น"
-              value={givenname}
-              onChange={(e) => {
-                setGivenname(e.target.value);
-              }}
-            />
           </div>
-          <div className="mt-4">
-            <Button color="primary" type="submit">
-              Edit{' '}
+          <div className="flex flex-col mt-4 space-y-2">
+            <Button className="text-center" color="primary" type="submit">
+              บันทึก
+            </Button>
+            <Button
+              className="text-center"
+              type="button"
+              onClick={handleUnregister}
+            >
+              ยกเลิกสมาชิก
             </Button>
           </div>
         </form>

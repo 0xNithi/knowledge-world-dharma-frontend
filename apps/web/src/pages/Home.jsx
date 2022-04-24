@@ -1,9 +1,9 @@
 /*eslint-disable*/
-import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { BACKEND_ENDPOINT } from '../config.json';
 import { useProduct } from '../stores/ProductReducer/Hook';
 import Post from './Posts';
-
 import Threaditem from './Threaditem';
 
 function Home(props) {
@@ -11,7 +11,7 @@ function Home(props) {
   const [selectFilter, setSelectFilter] = useState(0);
   const { items } = getItem();
   const GetallPost = async () => {
-    const res = await axios.get('https://localhost:44342/api/post');
+    const res = await axios.get(`${BACKEND_ENDPOINT}/api/post`);
     setItemAction(res.data);
   };
   const SearchList = items

@@ -1,6 +1,7 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { BACKEND_ENDPOINT } from '../config.json';
 import { useAuth } from '../stores/AuthReducer/Hook';
 
 const REACTIONS = [
@@ -35,6 +36,7 @@ const EMOJI_COUNTS = {
 };
 
 function Reactions({ id }) {
+  console.log({ id });
   const [item, setItem] = useState(null);
   const [emojiCount, setEmojiCount] = useState(EMOJI_COUNTS);
   const [selectedEmoji, setSelectedEmoji] = useState(undefined);
@@ -44,7 +46,7 @@ function Reactions({ id }) {
 
   const getPost = async () => {
     try {
-      const res = await axios.get(`https://localhost:44342/api/post/${id}`);
+      const res = await axios.get(`${BACKEND_ENDPOINT}/api/post/${id}`);
 
       setItem(res.data);
     } catch (error) {
@@ -56,7 +58,7 @@ function Reactions({ id }) {
     setSelectedEmoji(state);
     const Token = JSON.parse(localStorage.getItem('app_user')).accessToken;
     if (state === oldState) {
-      await axios.delete(`https://localhost:44342/api/like/${id}`, {
+      await axios.delete(`${BACKEND_ENDPOINT}/api/like/${id}`, {
         headers: {
           Authorization: `Bearer ${Token}`,
         },
@@ -69,19 +71,15 @@ function Reactions({ id }) {
         emoji: state,
         userId: user.user.id,
       };
-      await axios.post(
-        'https://localhost:44342/api/like',
-        JSON.stringify(data),
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${Token}`,
-          },
+      await axios.post(`${BACKEND_ENDPOINT}/api/like`, JSON.stringify(data), {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${Token}`,
         },
-      );
+      });
       setSelectedEmoji(state);
     } else {
-      await axios.delete(`https://localhost:44342/api/like/${id}`, {
+      await axios.delete(`${BACKEND_ENDPOINT}/api/like/${id}`, {
         headers: {
           Authorization: `Bearer ${Token}`,
         },
@@ -92,16 +90,12 @@ function Reactions({ id }) {
         emoji: state,
         userId: user.user.id,
       };
-      await axios.post(
-        'https://localhost:44342/api/like',
-        JSON.stringify(data),
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${Token}`,
-          },
+      await axios.post(`${BACKEND_ENDPOINT}/api/like`, JSON.stringify(data), {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${Token}`,
         },
-      );
+      });
       setSelectedEmoji(state);
     }
     getPost();
@@ -112,10 +106,12 @@ function Reactions({ id }) {
   }, []);
 
   useEffect(() => {
-    if (!item) return;
+    if (!item || !user.user) return;
+    console.log({ user });
     const { reacts } = item;
 
     reacts.forEach((react) => {
+      console.log({ react });
       if (react.userId === user.user.id) {
         setSelectedEmoji(react.emoji);
       }

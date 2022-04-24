@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Button, Input } from '@kwd/ui';
 import { useAuth } from '../stores/AuthReducer/Hook';
 import { useModal } from '../stores/ModalReducer/Hook';
+import { BACKEND_ENDPOINT } from '../config.json';
 
 function LoginModal() {
   const [username, setUsername] = useState('');
@@ -18,7 +19,7 @@ function LoginModal() {
     };
     try {
       const res = await axios.post(
-        'https://localhost:44342/auth/login',
+        `${BACKEND_ENDPOINT}/auth/login`,
         JSON.stringify(data),
         {
           headers: { 'Content-Type': 'application/json' },
@@ -26,7 +27,7 @@ function LoginModal() {
       );
       SetAccessToken(res.data);
       const Token = JSON.parse(localStorage.getItem('app_user')).accessToken;
-      const respone = await axios.get('https://localhost:44342/auth/profile', {
+      const respone = await axios.get(`${BACKEND_ENDPOINT}/auth/profile`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${Token}`,
