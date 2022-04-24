@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../stores/AuthReducer/Hook';
 import { useProduct } from '../stores/ProductReducer/Hook';
 import Reactions from '../Components/Reactions';
+import { BACKEND_ENDPOINT } from '../config.json';
 
 function Threaditem(props) {
   const { deleteItemAction } = useProduct();
@@ -20,9 +21,7 @@ function Threaditem(props) {
       const Token = JSON.parse(localStorage.getItem('app_user')).accessToken;
 
       const respone = await axios.get(
-        `https://localhost:44342/api/post/${
-          props.item.post && props.item.post.id
-        }`,
+        `${BACKEND_ENDPOINT}/api/post/${props.item.post && props.item.post.id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -31,9 +30,7 @@ function Threaditem(props) {
         },
       );
       await axios.delete(
-        `https://localhost:44342/api/post/${
-          props.item.post && props.item.post.id
-        }`,
+        `${BACKEND_ENDPOINT}/api/post/${props.item.post && props.item.post.id}`,
         {
           headers: {
             'Content-Type': 'application/json',

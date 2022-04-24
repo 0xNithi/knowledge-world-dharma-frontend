@@ -1,6 +1,7 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import axios from 'axios';
 import { Button, Input } from '@kwd/ui';
+import axios from 'axios';
+import React, { useCallback, useEffect, useState } from 'react';
+import { BACKEND_ENDPOINT } from '../config.json';
 import { useAuth } from '../stores/AuthReducer/Hook';
 
 function ProfileModal(props) {
@@ -16,7 +17,7 @@ function ProfileModal(props) {
     try {
       const Token = JSON.parse(localStorage.getItem('app_user')).accessToken;
       const res = await axios.get(
-        `https://localhost:44342/auth/profile/${user.id}`,
+        `${BACKEND_ENDPOINT}/auth/profile/${user.id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -43,7 +44,7 @@ function ProfileModal(props) {
     try {
       const Token = JSON.parse(localStorage.getItem('app_user')).accessToken;
       await axios.put(
-        `https://localhost:44342/auth/editProfile/${user.id}`,
+        `${BACKEND_ENDPOINT}/auth/editProfile/${user.id}`,
         JSON.stringify(data),
         {
           headers: {

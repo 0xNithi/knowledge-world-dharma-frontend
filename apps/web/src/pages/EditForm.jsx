@@ -11,6 +11,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
 import { Button, Input } from '@kwd/ui';
+import { BACKEND_ENDPOINT } from '../config.json';
 
 function EditForm() {
   const { id } = useParams();
@@ -24,7 +25,7 @@ function EditForm() {
   const getPost = useCallback(async () => {
     try {
       const Token = JSON.parse(localStorage.getItem('app_user')).accessToken;
-      const res = await axios.get(`https://localhost:44342/api/post/${id}`, {
+      const res = await axios.get(`${BACKEND_ENDPOINT}/api/post/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${Token}`,
@@ -58,7 +59,7 @@ function EditForm() {
     try {
       const Token = JSON.parse(localStorage.getItem('app_user')).accessToken;
       await axios.put(
-        `https://localhost:44342/api/post/${id}`,
+        `${BACKEND_ENDPOINT}/api/post/${id}`,
         JSON.stringify(data),
         {
           headers: {

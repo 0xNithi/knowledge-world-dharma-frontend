@@ -1,12 +1,13 @@
 /* eslint-disable */
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import parse from 'html-react-parser';
-import { useParams, Link } from 'react-router-dom';
-import { useModal } from '../stores/ModalReducer/Hook';
-import { useAuth } from '../stores/AuthReducer/Hook';
-import Comments from './Comments';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import Reactions from '../Components/Reactions';
+import { useAuth } from '../stores/AuthReducer/Hook';
+import { useModal } from '../stores/ModalReducer/Hook';
+import Comments from './Comments';
+import { BACKEND_ENDPOINT } from '../config.json'
 
 const EMOJI_COUNTS = {
   pray: 0,
@@ -29,7 +30,7 @@ function Threadinfo() {
 
   const GetPost = async () => {
     try {
-      const res = await axios.get(`https://localhost:44342/api/post/${id}`);
+      const res = await axios.get(`${BACKEND_ENDPOINT}/api/post/${id}`);
 
       setItem(res.data);
     } catch (error) {

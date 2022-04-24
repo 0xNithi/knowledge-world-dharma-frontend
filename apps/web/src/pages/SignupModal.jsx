@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
 import { Button, Input } from '@kwd/ui';
 import axios from 'axios';
+import React, { useState } from 'react';
+import { BACKEND_ENDPOINT } from '../config.json';
 import { useAuth } from '../stores/AuthReducer/Hook';
 
 function SignupModal(props) {
@@ -22,7 +23,7 @@ function SignupModal(props) {
     };
     try {
       const res = await axios.post(
-        'https://localhost:44342/auth/register',
+        `${BACKEND_ENDPOINT}/auth/register`,
         JSON.stringify(data),
         {
           headers: { 'Content-Type': 'application/json' },
