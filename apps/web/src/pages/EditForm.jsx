@@ -15,7 +15,7 @@ import { BACKEND_ENDPOINT } from '../config.json';
 
 function EditForm() {
   const { id } = useParams();
-  
+
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(),
   );
