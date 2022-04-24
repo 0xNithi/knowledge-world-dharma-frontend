@@ -6,6 +6,11 @@
   #root {
     @apply h-full;
   }
+
+  body {
+    @apply text-black bg-white;
+    @apply dark:bg-slate-900 dark:text-white;
+  }
 }
 
 @tailwind components;
