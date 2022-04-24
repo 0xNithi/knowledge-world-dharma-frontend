@@ -16,9 +16,7 @@ function Comments({ parentId }) {
   const [item, setItem] = useState(undefined);
   const GetPost = async () => {
     try {
-      const res = await axios.get(
-        `${BACKEND_ENDPOINT}/api/post/${parentId}`,
-      );
+      const res = await axios.get(`${BACKEND_ENDPOINT}/api/post/${parentId}`);
 
       setItem(res.data);
     } catch (error) {
@@ -82,7 +80,8 @@ function Comments({ parentId }) {
                   className="pl-2 mt-1 bg-white rounded "
                   style={{ width: '96%' }}
                 >
-                  <p>{parse(comment.post.content)}</p>
+                  {/* TODO: diff back */}
+                  <p>{parse(comment.content)}</p>
                   <p className="text-sm text-gray-400">{comment.owner}</p>
                 </div>
               );
