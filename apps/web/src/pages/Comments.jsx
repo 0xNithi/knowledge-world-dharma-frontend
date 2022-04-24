@@ -1,12 +1,13 @@
 /* eslint-disable */
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Button } from '@kwd/ui';
-import { EditorState, convertToRaw } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import axios from 'axios';
+import { convertToRaw, EditorState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import parse from 'html-react-parser';
+import React, { useEffect, useState } from 'react';
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { BACKEND_ENDPOINT } from '../config.json';
 
 function Comments({ parentId }) {
   const [editorState, setEditorState] = useState(() =>
@@ -15,9 +16,7 @@ function Comments({ parentId }) {
   const [item, setItem] = useState(undefined);
   const GetPost = async () => {
     try {
-      const res = await axios.get(
-        `https://localhost:44342/api/post/${parentId}`,
-      );
+      const res = await axios.get(`${BACKEND_ENDPOINT}/api/post/${parentId}`);
 
       setItem(res.data);
     } catch (error) {
@@ -39,16 +38,12 @@ function Comments({ parentId }) {
     };
     try {
       const Token = JSON.parse(localStorage.getItem('app_user')).accessToken;
-      await axios.post(
-        'https://localhost:44342/api/post',
-        JSON.stringify(data),
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${Token}`,
-          },
+      await axios.post(`${BACKEND_ENDPOINT}/api/post`, JSON.stringify(data), {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${Token}`,
         },
-      );
+      });
     } catch (error) {
       console.log(error);
     }
@@ -85,7 +80,8 @@ function Comments({ parentId }) {
                   className="pl-2 mt-1 bg-white rounded "
                   style={{ width: '96%' }}
                 >
-                  <p>{parse(comment.post.content)}</p>
+                  {/* TODO: diff back */}
+                  <p>{parse(comment.content)}</p>
                   <p className="text-sm text-gray-400">{comment.owner}</p>
                 </div>
               );

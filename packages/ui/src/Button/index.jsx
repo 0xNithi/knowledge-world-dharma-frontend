@@ -1,6 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-
+import React from 'react';
 import './Button.css';
 
 function Button({ color, size, className, children, ...props }) {
@@ -13,8 +12,8 @@ function Button({ color, size, className, children, ...props }) {
   return (
     <button
       type="button"
-      className={[classes, `btn-${color}`, `btn-${size}`].join(' ')}
       {...props}
+      className={[classes, `btn-${color}`, `btn-${size}`].join(' ')}
     >
       {children}
     </button>

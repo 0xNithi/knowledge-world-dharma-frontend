@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import { Button, Input } from '@kwd/ui';
 import axios from 'axios';
-import { EditorState, convertToRaw } from 'draft-js';
+import { convertToRaw, EditorState } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
+import React, { useState } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import draftToHtml from 'draftjs-to-html';
-import { Button, Input } from '@kwd/ui';
+import { BACKEND_ENDPOINT } from '../config.json';
 import { useProduct } from '../stores/ProductReducer/Hook';
 
 function PostForm() {
@@ -28,7 +29,7 @@ function PostForm() {
     try {
       const Token = JSON.parse(localStorage.getItem('app_user')).accessToken;
       const res = await axios.post(
-        'https://localhost:44342/api/post',
+        `${BACKEND_ENDPOINT}/api/post`,
         JSON.stringify(data),
         {
           headers: {
@@ -38,15 +39,12 @@ function PostForm() {
         },
       );
       const { id } = res.data;
-      const respone = await axios.get(
-        `https://localhost:44342/api/post/${id}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${Token}`,
-          },
+      const respone = await axios.get(`${BACKEND_ENDPOINT}/api/post/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${Token}`,
         },
-      );
+      });
       console.log(respone.data);
       addItemAction(respone.data);
     } catch (error) {
