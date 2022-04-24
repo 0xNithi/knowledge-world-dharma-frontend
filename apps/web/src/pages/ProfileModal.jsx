@@ -22,7 +22,7 @@ function ProfileModal(props) {
           Authorization: `Bearer ${Token}`,
         },
       });
-      console.log(res.data);
+      
       setEmail(res.data.emailAddress);
       setName(res.data.username);
       setSurname(res.data.surname);

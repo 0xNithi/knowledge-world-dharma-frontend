@@ -45,7 +45,7 @@ function PostForm() {
           Authorization: `Bearer ${Token}`,
         },
       });
-      console.log(respone.data);
+      
       addItemAction(respone.data);
     } catch (error) {
       console.log(error);
