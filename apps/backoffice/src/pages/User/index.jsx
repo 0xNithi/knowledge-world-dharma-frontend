@@ -1,6 +1,8 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
+import { useFetchUsers } from '../../state/users/hook';
+
 import NotFound from '../NotFound';
 
 import Users from './Users';
@@ -8,6 +10,8 @@ import UserCreate from './UserCreate';
 import UserUpdate from './UserUpdate';
 
 function User() {
+  useFetchUsers();
+
   return (
     <Routes>
       <Route path="/">

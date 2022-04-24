@@ -4,54 +4,40 @@ import { Button } from '@kwd/ui';
 
 import Box from '../../components/Box';
 import Table from '../../components/Table';
+import { useUsers } from '../../state/users/hook';
 
 function Users() {
+  const { users, error } = useUsers();
+
   const columns = useMemo(
     () => [
       {
         Header: 'Id',
-        accessor: 'col1', // accessor is the "key" in the data
+        accessor: 'id',
       },
       {
-        Header: 'Name',
-        accessor: 'col2',
+        Header: 'Given name',
+        accessor: 'givenName',
+      },
+      {
+        Header: 'Surname',
+        accessor: 'surname',
+      },
+      {
+        Header: 'Role',
+        accessor: 'role',
       },
       {
         Header: 'Option',
-        maxWidth: 70,
-        minWidth: 50,
-        width: 60,
         // eslint-disable-next-line
         Cell: ({ row }) => (
           <div className="space-x-2">
-            <Link to={`update/${row.original.col1}`}>
+            <Link to={`update/${row.original.id.toString()}`}>
               <Button>Update</Button>
             </Link>
             <Button>Delete</Button>
           </div>
         ),
-      },
-    ],
-    [],
-  );
-
-  const data = useMemo(
-    () => [
-      {
-        col1: 'Hello',
-        col2: 'World',
-      },
-      {
-        col1: 'react-table',
-        col2: 'rocks',
-      },
-      {
-        col1: 'whatever',
-        col2: 'you want',
-      },
-      {
-        col1: 'Nithi Nomprawat',
-        col2: 'you want Hello world',
       },
     ],
     [],
@@ -65,8 +51,9 @@ function Users() {
           <Button>Add User</Button>
         </Link>
       </Box>
+      {error && <Box>{error}</Box>}
       <Box className="flex flex-col">
-        <Table columns={columns} data={data} />
+        <Table columns={columns} data={users} />
       </Box>
     </>
   );

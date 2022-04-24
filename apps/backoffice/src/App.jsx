@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Layout from './components/Layout';
+import { useFetchUser } from './state/user/hook';
 
 const OverviewPage = React.lazy(() => import('./pages/Overview'));
 const AnouncementPage = React.lazy(() => import('./pages/Anouncement'));
@@ -10,6 +11,8 @@ const UserPage = React.lazy(() => import('./pages/User'));
 const LoginPage = React.lazy(() => import('./pages/Login'));
 
 function App() {
+  useFetchUser();
+
   return (
     <BrowserRouter>
       <Routes>
