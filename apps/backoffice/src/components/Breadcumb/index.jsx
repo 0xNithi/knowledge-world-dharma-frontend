@@ -16,7 +16,7 @@ function Breadcumb() {
     <div className="flex flex-row space-x-2 text-slate-400">
       {paths.map((item, index) => {
         return (
-          <>
+          <div className="space-x-2" key={item}>
             {index > 0 && <span>/</span>}
             <NavLink
               end
@@ -31,7 +31,7 @@ function Breadcumb() {
                 ? decodeURI(item).split('/').slice(-1).toString()
                 : item}
             </NavLink>
-          </>
+          </div>
         );
       })}
     </div>
