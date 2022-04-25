@@ -1,21 +1,19 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-import { useFetchUsers } from '../../state/users/hook';
-
 import NotFound from '../NotFound';
 
 import Users from './Users';
+import UserInfo from './UserInfo';
 import UserCreate from './UserCreate';
 import UserUpdate from './UserUpdate';
 
 function User() {
-  useFetchUsers();
-
   return (
     <Routes>
       <Route path="/">
         <Route index element={<Users />} />
+        <Route path=":slug" element={<UserInfo />} />
         <Route path="create" element={<UserCreate />} />
         <Route path="update" element={<Navigate to="/user" />} />
         <Route path="update/:slug" element={<UserUpdate />} />

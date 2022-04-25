@@ -1,14 +1,10 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import { useFetchThreads } from '../../state/threads/hook';
-
 import Threads from './Threads';
 import ThreadUpdate from './ThreadUpdate';
 
 function Thread() {
-  useFetchThreads();
-
   return (
     <Routes>
       <Route path="/">

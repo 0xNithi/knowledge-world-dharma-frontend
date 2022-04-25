@@ -1,13 +1,36 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@kwd/ui';
 
 import Box from '../../components/Box';
 import Table from '../../components/Table';
-import { useThreads } from '../../state/threads/hook';
+import { useFetchThreads, useThreads } from '../../state/threads/hook';
+import ConfirmModal from '../../components/ConfirmModal';
 
 function Threads() {
+  useFetchThreads();
+
   const { threads, error, handleDelete } = useThreads();
+
+  const [slug, setSlug] = useState(false);
+
+  const handleOpen = useCallback(
+    (id) => () => {
+      setSlug(id);
+    },
+    [setSlug],
+  );
+
+  const handleClose = useCallback(() => {
+    setSlug(false);
+  }, [setSlug]);
+
+  const handleSubmit = useCallback(() => {
+    handleDelete({
+      slug,
+    });
+    handleClose();
+  }, [slug, handleClose, handleDelete]);
 
   const columns = useMemo(
     () => [
@@ -24,19 +47,10 @@ function Threads() {
       {
         Header: 'Status',
         accessor: ({ post }) => {
-          const hide = post.hideStatus;
-
-          if (hide === -1) {
-            return 'visible';
-          }
-          if (hide === 0) {
-            return 'visible';
-          }
-          if (hide === 1) {
+          if (post.hideStatus) {
             return 'hide';
           }
-
-          return 'error';
+          return 'visible';
         },
         id: 'status',
       },
@@ -45,21 +59,15 @@ function Threads() {
         // eslint-disable-next-line
         Cell: ({ row }) => (
           <div className="space-x-2">
-            <Link to={`update/${row.original.post.id.toString()}`}>
+            <Link to={`update/${row.original.post.id}`}>
               <Button>Update</Button>
             </Link>
-            <Button
-              onClick={() =>
-                handleDelete({ slug: row.original.post.id.toString() })
-              }
-            >
-              Delete
-            </Button>
+            <Button onClick={handleOpen(row.original.post.id)}>Delete</Button>
           </div>
         ),
       },
     ],
-    [handleDelete],
+    [handleOpen],
   );
 
   return (
@@ -69,6 +77,13 @@ function Threads() {
       <Box className="flex flex-col">
         <Table columns={columns} data={threads} />
       </Box>
+      {slug && (
+        <ConfirmModal
+          isOpen={slug !== false}
+          onRequestClose={handleClose}
+          handleSubmit={handleSubmit}
+        />
+      )}
     </>
   );
 }

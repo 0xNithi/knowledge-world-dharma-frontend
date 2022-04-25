@@ -2,12 +2,16 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Button } from '@kwd/ui';
 
+import { useUser } from '../../state/user/hook';
+
 import { links } from './config';
 import ThemeSwitch from './ThemeSwitch';
 
 function Sidebar() {
+  const { user, handleLogout } = useUser();
+
   return (
-    <div className="flex flex-col w-64 h-full p-4 border-r bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700">
+    <div className="fixed inset-0 flex flex-col w-64 h-full p-4 border-r bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700">
       <div className="flex flex-col justify-between h-full">
         <div className="flex flex-col space-y-8">
           <div className="flex space-x-2 text-sm">
@@ -17,7 +21,9 @@ function Sidebar() {
               className="object-cover object-center w-12 h-12 rounded"
             />
             <div className="flex flex-col space-y-2">
-              <span>Nithi Nomprawat</span>
+              <span>
+                {user.givenName} {user.surname}
+              </span>
               <span className="text-slate-500">Admin</span>
             </div>
           </div>
@@ -42,7 +48,9 @@ function Sidebar() {
           </div>
         </div>
         <div className="flex justify-between space-x-2">
-          <Button className="flex-auto">Logout</Button>
+          <Button className="flex-auto" onClick={handleLogout}>
+            Logout
+          </Button>
           <ThemeSwitch />
         </div>
       </div>
