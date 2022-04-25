@@ -2,10 +2,11 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Input } from '@kwd/ui';
 
+import Alert from '../../components/Alert';
 import { useUser } from '../../state/user/hook';
 
 function LoginForm() {
-  const { handleLogin } = useUser();
+  const { isLoading, error, handleLogin } = useUser();
   const {
     register,
     handleSubmit,
@@ -38,9 +39,10 @@ function LoginForm() {
         error={errors.password}
         {...register('password')}
       />
-      <Button color="primary" type="submit">
+      <Button color="primary" type="submit" disabled={isLoading}>
         Login
       </Button>
+      {error && <Alert content={error} />}
     </form>
   );
 }

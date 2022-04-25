@@ -1,13 +1,34 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@kwd/ui';
 
 import Box from '../../components/Box';
+import ConfirmModal from '../../components/ConfirmModal';
 import Table from '../../components/Table';
-import { useUsers } from '../../state/users/hook';
+import { useUsers, useFetchUsers } from '../../state/users/hook';
 
 function Users() {
-  const { users, error } = useUsers();
+  useFetchUsers();
+
+  const { users, error, handleDelete } = useUsers();
+
+  const [slug, setSlug] = useState(false);
+
+  const handleOpen = useCallback(
+    (id) => () => {
+      setSlug(id);
+    },
+    [setSlug],
+  );
+
+  const handleClose = useCallback(() => {
+    setSlug(false);
+  }, [setSlug]);
+
+  const handleSubmit = useCallback(() => {
+    handleDelete({ slug });
+    handleClose();
+  }, [slug, handleClose, handleDelete]);
 
   const columns = useMemo(
     () => [
@@ -32,15 +53,18 @@ function Users() {
         // eslint-disable-next-line
         Cell: ({ row }) => (
           <div className="space-x-2">
-            <Link to={`update/${row.original.id.toString()}`}>
+            <Link to={row.original.id.toString()}>
+              <Button>Info</Button>
+            </Link>
+            <Link to={`update/${row.original.id}`}>
               <Button>Update</Button>
             </Link>
-            <Button>Delete</Button>
+            <Button onClick={handleOpen(row.original.id)}>Delete</Button>
           </div>
         ),
       },
     ],
-    [],
+    [handleOpen],
   );
 
   return (
@@ -55,6 +79,13 @@ function Users() {
       <Box className="flex flex-col">
         <Table columns={columns} data={users} />
       </Box>
+      {slug && (
+        <ConfirmModal
+          isOpen={slug !== false}
+          onRequestClose={handleClose}
+          handleSubmit={handleSubmit}
+        />
+      )}
     </>
   );
 }

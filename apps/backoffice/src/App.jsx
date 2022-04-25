@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Layout from './components/Layout';
+import ProtectedRoute from './components/ProtectRoute';
 import { useFetchUser } from './state/user/hook';
 
 const OverviewPage = React.lazy(() => import('./pages/Overview'));
@@ -11,12 +12,21 @@ const UserPage = React.lazy(() => import('./pages/User'));
 const LoginPage = React.lazy(() => import('./pages/Login'));
 
 function App() {
-  useFetchUser();
+  const { user } = useFetchUser();
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute
+              isAllowed={!!user && user.role.toLowerCase() === 'admin'}
+            >
+              <Layout />
+            </ProtectedRoute>
+          }
+        >
           <Route
             index
             element={
@@ -53,9 +63,14 @@ function App() {
         <Route
           path="/login"
           element={
-            <React.Suspense fallback={<>Loading...</>}>
-              <LoginPage />
-            </React.Suspense>
+            <ProtectedRoute
+              isAllowed={!user || user.role.toLowerCase() !== 'admin'}
+              redirectPath="/"
+            >
+              <React.Suspense fallback={<>Loading...</>}>
+                <LoginPage />
+              </React.Suspense>
+            </ProtectedRoute>
           }
         />
       </Routes>

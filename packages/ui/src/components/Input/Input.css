@@ -1,7 +1,7 @@
 .input {
   @apply box-border block w-full border border-solid rounded-md shadow-sm;
   @apply bg-white text-slate-800 border-slate-400;
-  @apply focus:ring-amber-500 focus:border-amber-500 focus:outline-none;
+  @apply focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none;
 
   @apply dark:bg-transparent dark:text-slate-100;
 

@@ -4,7 +4,7 @@ import parse from 'html-react-parser';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../stores/AuthReducer/Hook';
 import { useProduct } from '../stores/ProductReducer/Hook';
-import Reactions from '../components/Reactions';
+import Reactions from '../Components/Reactions';
 import { BACKEND_ENDPOINT } from '../config.json';
 
 function Threaditem(props) {
@@ -77,7 +77,7 @@ function Threaditem(props) {
           </div>
         )}
         {showOption && (
-          <div className="absolute top-0 right-0 flex flex-col justify-center w-24 h-18 text-xs translate-x-20 translate-y-5 rounded cursor-pointer bg-neutral-300">
+          <div className="absolute top-0 right-0 flex flex-col justify-center w-24 text-xs translate-x-20 translate-y-5 rounded cursor-pointer h-18 bg-neutral-300">
             <ul className="ml-3">
               <Link to={`/editform/${props.item.post && props.item.post.id}`}>
                 <li>edit</li>
@@ -97,7 +97,7 @@ function Threaditem(props) {
         )}
         <div className="relative flex flex-col items-center w-full overflow-hidden">
           <div className="flex flex-row items-start w-11/12 mt-2">
-            <span className="bg-green-700 text-xs font-medium text-white px-2 rounded-full">
+            <span className="px-2 text-xs font-medium text-white bg-green-700 rounded-full">
               {props.item && props.item.post.hashTag ? (
                 `/${props.item.post.hashTag}`
               ) : (
@@ -108,7 +108,7 @@ function Threaditem(props) {
               สร้างโดย {props.item.owner}
             </div>
           </div>
-          <span className="ml-10 text-lg self-start">
+          <span className="self-start ml-10 text-lg">
             หัวข้อ: {props.item ? props.item.post.title : 0}
           </span>
           <div className="w-11/12 mt-2 ">
@@ -124,7 +124,7 @@ function Threaditem(props) {
             {}
           </div>
           <Link
-            className="mt-4 bg-green-600 rounded-full px-1 text-white"
+            className="px-1 mt-4 text-white bg-green-600 rounded-full"
             to={`/thredinfo/${props.item.post && props.item.post.id}`}
           >
             ดูเพิ่มเติม
