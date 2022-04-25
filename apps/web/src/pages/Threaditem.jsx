@@ -1,11 +1,11 @@
+import React, { useState } from 'react';
 import axios from 'axios';
 import parse from 'html-react-parser';
-import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Reactions from '../Components/Reactions';
-import { BACKEND_ENDPOINT } from '../config.json';
 import { useAuth } from '../stores/AuthReducer/Hook';
 import { useProduct } from '../stores/ProductReducer/Hook';
+import Reactions from '../Components/Reactions';
+import { BACKEND_ENDPOINT } from '../config.json';
 
 function Threaditem(props) {
   const { deleteItemAction } = useProduct();
@@ -52,7 +52,7 @@ function Threaditem(props) {
           <div>
             {props.item.post.userId === user.id && (
               <div
-                className="absolute z-10 w-3 h-3 cursor-pointer top-1 right-1"
+                className="absolute z-10 w-3 h-3 cursor-pointer top-1 right-1 "
                 onKeyPress={handleKeyDown}
                 role="button"
                 tabIndex="0"
@@ -120,8 +120,15 @@ function Threaditem(props) {
         <div className="flex flex-row items-center justify-between w-full h-10 px-1 mt-2 rounded-b-lg bg-slate-700">
           <div className="flex flex-row items-center">
             <div className="my-3 cursor-pointer">
-              {props.item.post.id && <Reactions id={props.item.post.id} />}
+              <Reactions id={props.item.post.id} />
             </div>
+            {/* <div className="ml-1 text-sm text-white">
+              {props.item.postLikes ? (
+                props.item.postLikes.length
+              ) : (
+                <p>loading...</p>
+              )}
+            </div> */}
           </div>
           <Link to={`/thredinfo/${props.item.post && props.item.post.id}`}>
             <div className="flex flex-row items-center">

@@ -8,6 +8,7 @@ import LoginModal from './pages/LoginModal';
 import SignupModal from './pages/SignupModal';
 import ProfileModal from './pages/ProfileModal';
 import EditForm from './pages/EditForm';
+import EditCommentForm from './pages/EditCommentForm';
 import { useModal } from './stores/ModalReducer/Hook';
 
 function App() {
@@ -58,6 +59,7 @@ function App() {
           <Route path="/" element={<Home searchWord={searchWord} />} />
           <Route path="/postform" element={<PostForm />} />
           <Route path="/editform/:id" element={<EditForm />} />
+          <Route path="/editcommentform/:id" element={<EditCommentForm />} />
           <Route path="/thredinfo/:id" element={<Threadinfo />} />
         </Routes>
       </div>
