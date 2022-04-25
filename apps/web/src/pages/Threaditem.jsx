@@ -2,7 +2,7 @@ import axios from 'axios';
 import parse from 'html-react-parser';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Reactions from '../Components/Reactions';
+import Reactions from '../components/Reactions';
 import { BACKEND_ENDPOINT } from '../config.json';
 import { useAuth } from '../stores/AuthReducer/Hook';
 import { useProduct } from '../stores/ProductReducer/Hook';

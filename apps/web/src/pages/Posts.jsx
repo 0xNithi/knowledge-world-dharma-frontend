@@ -10,7 +10,7 @@ function Posts(props) {
   const user = getUser();
   const handleKeyDown = () => {};
   return (
-    <div className="flex flex-col w-2/4 mt-20 bg-white rounded-md h-14">
+    <div className="flex flex-col w-2/4 bg-white rounded-md h-14">
       <div className="flex flex-row items-center w-full h-full gap-4">
         {user.user ? (
           <Link to="/postform" className="w-9/12 ml-6 ">

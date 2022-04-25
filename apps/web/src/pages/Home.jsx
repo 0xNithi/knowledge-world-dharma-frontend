@@ -5,6 +5,7 @@ import { BACKEND_ENDPOINT } from '../config.json';
 import { useProduct } from '../stores/ProductReducer/Hook';
 import Post from './Posts';
 import Threaditem from './Threaditem';
+import Announcements from '../components/Announcements';
 
 function Home(props) {
   const { setItemAction, getItem } = useProduct();
@@ -41,6 +42,9 @@ function Home(props) {
 
   return (
     <>
+      <div className="mt-20 w-full flex justify-center">
+        <Announcements />
+      </div>
       <Post changeSelectFilterState={(word) => setSelectFilter(word)} />
       {items && SearchList.map((item) => <Threaditem item={item} />)}
     </>
