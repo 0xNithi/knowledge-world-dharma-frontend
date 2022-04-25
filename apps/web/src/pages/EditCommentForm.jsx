@@ -10,18 +10,17 @@ import {
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
-import { Button, Input } from '@kwd/ui';
+import { Button } from '@kwd/ui';
 import { BACKEND_ENDPOINT } from '../config.json';
 
 function EditCommentForm() {
   const { id } = useParams();
-  console.log(id);
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(),
   );
   const [title, setTitle] = useState('comment');
   const [hashtag, setHashtag] = useState('null');
-  const [hideStatus, sethideStatus] = useState(0);
+  const [HideStatus, sethideStatus] = useState(false);
   const getPost = useCallback(async () => {
     try {
       const Token = JSON.parse(localStorage.getItem('app_user')).accessToken;
@@ -41,7 +40,7 @@ function EditCommentForm() {
       sethideStatus(res.data.post.hideStatus);
       setEditorState(EditorState.createWithContent(state));
     } catch (error) {
-      console.log(error);
+      alert(error.message);
     }
   }, [id]);
   useEffect(() => {
@@ -50,6 +49,12 @@ function EditCommentForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const content = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+    let hideStatus = 0;
+    if (HideStatus === true) {
+      hideStatus = 1;
+    } else {
+      hideStatus = -1;
+    }
     const data = {
       content,
       title,
@@ -69,7 +74,7 @@ function EditCommentForm() {
         },
       );
     } catch (error) {
-      console.log(error);
+      alert(error.message);
     }
   };
   return (
@@ -97,15 +102,20 @@ function EditCommentForm() {
               setHashtag(e.target.value);
             }}
           /> */}
-          <Input
-            label="สถานะ"
-            placeholder="สถานะ"
-            value={hideStatus}
-            className="!w-11/12 "
-            onChange={(e) => {
-              sethideStatus(e.target.value);
-            }}
-          />
+          {/* <div className="flex flex-col mt-1 items-left">
+            <span>สถานะ</span>
+            <label htmlFor="toggle-switch" className="mt-2">
+              <input
+                type="checkbox"
+                id="toggle-switch"
+                checked={HideStatus}
+                className="relative w-12 h-6 rounded-full appearance-none bg-slate-400"
+                onChange={(e) => {
+                  sethideStatus(e.target.checked);
+                }}
+              />
+            </label>
+          </div> */}
         </div>
         <div className="w-11/12 mt-4">
           <Editor

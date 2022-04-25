@@ -4,7 +4,7 @@ import parse from 'html-react-parser';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../stores/AuthReducer/Hook';
 import { useProduct } from '../stores/ProductReducer/Hook';
-import Reactions from '../components/Reactions';
+import Reactions from '../Components/Reactions';
 import { BACKEND_ENDPOINT } from '../config.json';
 
 function Threaditem(props) {

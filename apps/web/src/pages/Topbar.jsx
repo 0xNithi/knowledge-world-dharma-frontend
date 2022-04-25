@@ -1,33 +1,35 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { Button, Input } from '@kwd/ui';
 import { useAuth } from '../stores/AuthReducer/Hook';
 import { useModal } from '../stores/ModalReducer/Hook';
 
 function Topbar(props) {
   const { showModal } = useModal();
-  const [showmenu, setShowmenu] = useState(false);
   const { getUser, logoutAuth } = useAuth();
 
   const user = getUser();
   const toggleMenuBar = () => {
-    setShowmenu(!showmenu);
+    props.changeMenuBarState(!props.showmenu);
   };
   const Logout = () => {
     logoutAuth();
     localStorage.clear();
-    setShowmenu(false);
+    props.changeMenuBarState(false);
   };
   const handleKeyDown = () => {};
   return (
     <div className="fixed w-full h-12 bg-white ">
       <div className="flex flex-row items-center justify-between w-full full">
-        <div className="w-10 h-10 my-1 ml-2">
-          <img
-            className="w-full h-full"
-            src="https://i.pinimg.com/564x/96/52/27/9652275c76089ad26782344e46b3a429--islam-religion-quran.jpg"
-            alt="logo"
-          />
-        </div>
+        <Link to="/">
+          <div className="w-10 h-10 my-1 ml-2">
+            <img
+              className="w-full h-full"
+              src="https://i.pinimg.com/564x/96/52/27/9652275c76089ad26782344e46b3a429--islam-religion-quran.jpg"
+              alt="logo"
+            />
+          </div>
+        </Link>
         <div className="flex flex-row items-center justify-center w-full ">
           <div className="w-6/12 ml-18">
             <Input
@@ -95,10 +97,9 @@ function Topbar(props) {
               </div>
             </div>
           )}
-          {showmenu && (
+          {props.showmenu && (
             <div className="absolute right-0 w-48 bg-white top-6 ">
               <ul className="my-2 ml-3 ">
-                <li>Dark Mode</li>
                 <li>
                   <span
                     onKeyPress={handleKeyDown}
