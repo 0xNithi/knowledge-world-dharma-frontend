@@ -5,7 +5,7 @@ import { BACKEND_ENDPOINT } from '../config.json';
 import { useAuth } from '../stores/AuthReducer/Hook';
 
 function ProfileModal(props) {
-  const { getUser } = useAuth();
+  const { getUser, SetNewUser } = useAuth();
   const { user } = getUser();
 
   const [username, setName] = useState('');
@@ -43,8 +43,8 @@ function ProfileModal(props) {
   const submitHandle = async (e) => {
     e.preventDefault();
     const data = {
-      emailAddress,
       username,
+      emailAddress,
       surname,
       givenname,
     };
@@ -60,6 +60,15 @@ function ProfileModal(props) {
           },
         },
       );
+      const respone = await axios.get(`${BACKEND_ENDPOINT}/auth/profile`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${Token}`,
+        },
+      });
+
+      SetNewUser(respone.data);
+      console.log(respone.data);
     } catch (error) {
       console.log(error);
     }
