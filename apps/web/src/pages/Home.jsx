@@ -5,7 +5,7 @@ import { BACKEND_ENDPOINT } from '../config.json';
 import { useProduct } from '../stores/ProductReducer/Hook';
 import Post from './Posts';
 import Threaditem from './Threaditem';
-import Announcements from '../components/Announcements';
+import Announcements from '../Components/Announcements';
 
 function Home(props) {
   const { setItemAction, getItem } = useProduct();
