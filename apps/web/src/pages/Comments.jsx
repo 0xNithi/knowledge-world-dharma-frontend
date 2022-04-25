@@ -3,24 +3,27 @@ import { Button } from '@kwd/ui';
 import axios from 'axios';
 import { convertToRaw, EditorState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
-import parse from 'html-react-parser';
 import React, { useEffect, useState } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { BACKEND_ENDPOINT } from '../config.json';
+import { useAuth } from '../stores/AuthReducer/Hook';
+import CommentItem from './CommentItem';
 
 function Comments({ parentId }) {
+  const { getUser } = useAuth();
+  const { user } = getUser();
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(),
   );
+
   const [item, setItem] = useState(undefined);
   const GetPost = async () => {
     try {
       const res = await axios.get(`${BACKEND_ENDPOINT}/api/post/${parentId}`);
-
       setItem(res.data);
     } catch (error) {
-      console.log(error);
+      alert(error.message);
     }
   };
 
@@ -44,8 +47,10 @@ function Comments({ parentId }) {
           Authorization: `Bearer ${Token}`,
         },
       });
+      const res = await axios.get(`${BACKEND_ENDPOINT}/api/post/${parentId}`);
+      setItem(res.data);
     } catch (error) {
-      console.log(error);
+      alert(error.message);
     }
   };
   return (
@@ -66,26 +71,23 @@ function Comments({ parentId }) {
           </div>
           <div div className="mt-4 ">
             <Button color="primary" type="submit">
-              write
+              แสดงความคิดเห็น
             </Button>
           </div>
         </form>
-
+        {/* edit comments */}
         {item && (
-          <div className="flex flex-col items-center justify-center w-full my-2 bg-neutral-800">
-            {console.log('item', item)}
-            {item.comments.map((comment) => {
-              return (
-                <div
-                  className="pl-2 mt-1 bg-white rounded "
-                  style={{ width: '96%' }}
-                >
-                  {/* TODO: diff back */}
-                  <p>{parse(comment.content)}</p>
-                  <p className="text-sm text-gray-400">{comment.owner}</p>
-                </div>
-              );
-            })}
+          <div className="w-full h-full bg-neutral-800">
+            {item.comments.map((comment) => (
+              <CommentItem
+                comment={comment}
+                parentId={parentId}
+                item={item}
+                changesetItem={(word) => {
+                  setItem(word);
+                }}
+              />
+            ))}
           </div>
         )}
       </div>
