@@ -4,7 +4,7 @@ import parse from 'html-react-parser';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../stores/AuthReducer/Hook';
 import { useProduct } from '../stores/ProductReducer/Hook';
-import Reactions from '../Components/Reactions';
+import Reactions from '../components/Reactions';
 import { BACKEND_ENDPOINT } from '../config.json';
 
 function Threaditem(props) {
@@ -122,13 +122,6 @@ function Threaditem(props) {
             <div className="my-3 cursor-pointer">
               <Reactions id={props.item.post.id} />
             </div>
-            {/* <div className="ml-1 text-sm text-white">
-              {props.item.postLikes ? (
-                props.item.postLikes.length
-              ) : (
-                <p>loading...</p>
-              )}
-            </div> */}
           </div>
           <Link to={`/thredinfo/${props.item.post && props.item.post.id}`}>
             <div className="flex flex-row items-center">

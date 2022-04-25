@@ -106,15 +106,14 @@ function Reactions({ id }) {
 
   useEffect(() => {
     getPost();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (!item || !user.user) return;
-    console.log({ user });
     const { reacts } = item;
+    setSelectedEmoji(undefined);
 
     reacts.forEach((react) => {
-      console.log({ react });
       if (react.userId === user.user.id) {
         setSelectedEmoji(react.emoji);
       }
