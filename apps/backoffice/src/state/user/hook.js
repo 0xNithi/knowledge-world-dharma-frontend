@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
   initialize as initializeAction,
+  logout as logoutAction,
   fetchLogin,
   fetchRegister,
   fetchUser,
@@ -10,11 +11,15 @@ import {
 
 export const useFetchUser = () => {
   const dispatch = useDispatch();
-  const accessToken = useSelector((state) => state.user.accessToken);
+  const { user, accessToken } = useSelector((state) => state.user);
 
   useEffect(() => {
-    dispatch(fetchUser({ accessToken }));
+    if (accessToken) {
+      dispatch(fetchUser({ accessToken }));
+    }
   }, [accessToken, dispatch]);
+
+  return { user };
 };
 
 export const useUser = () => {
@@ -37,9 +42,21 @@ export const useUser = () => {
     [dispatch],
   );
 
+  const handleLogout = useCallback(() => {
+    dispatch(logoutAction());
+  }, [dispatch]);
+
   useEffect(() => {
     dispatch(initializeAction());
   }, [dispatch]);
 
-  return { user, accessToken, isLoading, error, handleRegister, handleLogin };
+  return {
+    user,
+    accessToken,
+    isLoading,
+    error,
+    handleRegister,
+    handleLogin,
+    handleLogout,
+  };
 };
