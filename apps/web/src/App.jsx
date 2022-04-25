@@ -4,6 +4,7 @@ import PostForm from './pages/PostForm';
 import Home from './pages/Home';
 import Threadinfo from './pages/Threadinfo';
 import Topbar from './pages/Topbar';
+import MyPost from './pages/MyPost';
 import LoginModal from './pages/LoginModal';
 import SignupModal from './pages/SignupModal';
 import ProfileModal from './pages/ProfileModal';
@@ -61,6 +62,10 @@ function App() {
           <Route path="/editform/:id" element={<EditForm />} />
           <Route path="/editcommentform/:id" element={<EditCommentForm />} />
           <Route path="/thredinfo/:id" element={<Threadinfo />} />
+          <Route
+            path="/my-posts"
+            element={<MyPost searchWord={searchWord} />}
+          />
         </Routes>
       </div>
     </div>

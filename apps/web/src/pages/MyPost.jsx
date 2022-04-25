@@ -5,9 +5,8 @@ import { BACKEND_ENDPOINT } from '../config.json';
 import { useProduct } from '../stores/ProductReducer/Hook';
 import Post from './Posts';
 import Threaditem from './Threaditem';
-import Announcements from '../components/Announcements';
-
-function Home(props) {
+import { useAuth } from '../stores/AuthReducer/Hook';
+function MyPost(props) {
   const { setItemAction, getItem } = useProduct();
   const [selectFilter, setSelectFilter] = useState(0);
   const { items } = getItem();
@@ -19,6 +18,12 @@ function Home(props) {
   const SearchList = useCallback(() => {
     if (!items) return [];
     return items
+      .filter((item) => {
+        const { getUser } = useAuth();
+
+        const user = getUser();
+        return item.post.userId === user.user.id;
+      })
       .filter((item) => {
         return item.post.hashTag != null;
       })
@@ -46,13 +51,14 @@ function Home(props) {
 
   return (
     <>
-      <div className="mt-20 w-full flex justify-center">
-        <Announcements />
-      </div>
+      <div className="mt-20 w-full flex justify-center"></div>
       <Post changeSelectFilterState={(word) => setSelectFilter(word)} />
-      {items && SearchList().reverse().map((item) => <Threaditem item={item} />)}
+      {items &&
+        SearchList()
+          .reverse()
+          .map((item) => <Threaditem item={item} />)}
     </>
   );
 }
 
-export default Home;
+export default MyPost;

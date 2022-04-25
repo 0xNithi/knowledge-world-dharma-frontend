@@ -21,7 +21,6 @@ function Comments({ parentId }) {
   const GetPost = async () => {
     try {
       const res = await axios.get(`${BACKEND_ENDPOINT}/api/post/${parentId}`);
-      console.log(res.data);
       setItem(res.data);
     } catch (error) {
       console.log(error);
@@ -79,7 +78,6 @@ function Comments({ parentId }) {
         {/* edit comments */}
         {item && (
           <div className="w-full h-full bg-neutral-800">
-            {console.log('item', item)}
             {item.comments.map((comment) => (
               <CommentItem comment={comment} parentId={parentId} item={item} changesetItem={(word)=>{setItem(word)}}/>
             ))}

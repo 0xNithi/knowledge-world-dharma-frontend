@@ -68,7 +68,6 @@ function ProfileModal(props) {
       });
 
       SetNewUser(respone.data);
-      console.log(respone.data);
     } catch (error) {
       console.log(error);
     }

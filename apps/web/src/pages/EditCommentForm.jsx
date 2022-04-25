@@ -15,7 +15,6 @@ import { BACKEND_ENDPOINT } from '../config.json';
 
 function EditCommentForm() {
   const { id } = useParams();
-  console.log(id);
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(),
   );

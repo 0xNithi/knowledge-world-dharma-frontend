@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Input } from '@kwd/ui';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../stores/AuthReducer/Hook';
 import { useModal } from '../stores/ModalReducer/Hook';
 
@@ -99,6 +100,9 @@ function Topbar(props) {
             <div className="absolute right-0 w-48 bg-white top-6 ">
               <ul className="my-2 ml-3 ">
                 <li>Dark Mode</li>
+                <li>
+                  <Link to="/my-posts">โพสต์ของฉัน</Link>
+                </li>
                 <li>
                   <span
                     onKeyPress={handleKeyDown}

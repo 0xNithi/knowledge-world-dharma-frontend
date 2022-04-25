@@ -36,7 +36,6 @@ function EditForm() {
       });
       if (res.data) {
         const array = [];
-        const arrayList = [];
         for (let index = 0; index < res.data.length; ) {
           if (res.data[index].post.hashTag !== array) {
             array.push(res.data[index].post.hashTag);
@@ -44,7 +43,6 @@ function EditForm() {
           index += 1;
         }
         const uniqueChars = [...new Set(array)];
-        console.log(uniqueChars);
         setAllPost(uniqueChars);
       }
     } catch (error) {
@@ -90,7 +88,6 @@ function EditForm() {
     } else {
       hideStatus = -1;
     }
-    console.log(hideStatus);
     const data = {
       content,
       title,
@@ -119,9 +116,6 @@ function EditForm() {
   useEffect(() => {
     getAllPost();
   }, [getAllPost]);
-  useEffect(() => {
-    console.log(HideStatus);
-  }, [HideStatus]);
   return (
     <div className="flex flex-col items-center w-full ">
       {!loading && (
