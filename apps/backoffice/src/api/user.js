@@ -22,6 +22,31 @@ const UserAPI = {
         Authorization: `Bearer ${accessToken}`,
       },
     }),
+  ban: ({ slug, accessToken }) =>
+    api({
+      method: 'put',
+      url: `/auth/ban/${slug}`,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }),
+  update: ({ slug, accessToken, data }) =>
+    api({
+      method: 'put',
+      url: `/auth/editProfile/${slug}`,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      data,
+    }),
+  delete: ({ slug, accessToken }) =>
+    api({
+      method: 'delete',
+      url: `/auth/banish/${slug}`,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }),
 };
 
 export default UserAPI;

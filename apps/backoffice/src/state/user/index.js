@@ -10,21 +10,6 @@ export const initialState = {
   error: null,
 };
 
-export const fetchRegister = createAsyncThunk(
-  'user/fetchRegister',
-  async ({ data }, { rejectWithValue }) => {
-    try {
-      const response = await UserAPI.register({ data });
-      return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return rejectWithValue(error.response.data);
-      }
-      throw error;
-    }
-  },
-);
-
 export const fetchLogin = createAsyncThunk(
   'user/fetchLogin',
   async ({ data }, { rejectWithValue }) => {
@@ -45,10 +30,16 @@ export const fetchUser = createAsyncThunk(
   async ({ accessToken }, { rejectWithValue }) => {
     try {
       const response = await UserAPI.profile({ accessToken });
+      if (response.data.role.toLowerCase() !== 'admin') {
+        throw new Error('Restrict administrator access');
+      }
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        return rejectWithValue(error.response.data);
+        return rejectWithValue(error.response.statusText);
+      }
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
       }
       throw error;
     }
@@ -66,39 +57,40 @@ export const userSlice = createSlice({
         accessToken: state.accessToken,
       };
     },
-    logout: () => initialState,
+    logout: () => {
+      return { ...initialState };
+    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(
-        fetchRegister.pending || fetchLogin.pending || fetchUser.pending,
-        (state) => {
-          state.isLoading = true;
-        },
-      )
+      .addCase(fetchLogin.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchLogin.fulfilled, (state, { payload }) => {
+        state.accessToken = payload;
+        state.isLoading = false;
+      })
       .addCase(fetchUser.fulfilled, (state, { payload }) => {
         state.user = payload;
         state.isLoading = false;
       })
-      .addCase(
-        fetchRegister.fulfilled || fetchLogin.fulfilled,
-        (state, { payload }) => {
-          state.accessToken = payload;
-          state.isLoading = false;
-        },
-      )
-      .addCase(fetchUser.rejected, () => initialState)
-      .addCase(
-        fetchRegister.rejected || fetchLogin.rejected,
-        (state, { payload }) => {
-          state.isLoading = false;
-          state.error = payload;
-        },
-      );
+      .addCase(fetchLogin.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+      .addCase(fetchUser.rejected, (state, { payload }) => {
+        state.user = null;
+        state.accessToken = null;
+        state.isLoading = false;
+        state.error = payload;
+      });
   },
 });
 
 // Actions
-export const { initialize } = userSlice.actions;
+export const { initialize, logout } = userSlice.actions;
 
 export default userSlice.reducer;

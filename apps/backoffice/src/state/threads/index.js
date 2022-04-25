@@ -51,8 +51,8 @@ export const fetchDeleteThread = createAsyncThunk(
   'threads/fetchDeleteThread',
   async ({ slug, accessToken }, { rejectWithValue }) => {
     try {
-      const response = await ThreadAPI.delete({ slug, accessToken });
-      return response.data;
+      await ThreadAPI.delete({ slug, accessToken });
+      return slug;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         return rejectWithValue(error.response.data);
@@ -72,15 +72,18 @@ export const threadsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(
-        fetchThreads.pending ||
-          fetchThread.pending ||
-          fetchUpdateThread.pending ||
-          fetchDeleteThread.pending,
-        (state) => {
-          state.isLoading = true;
-        },
-      )
+      .addCase(fetchThreads.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchThread.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchUpdateThread.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchDeleteThread.pending, (state) => {
+        state.isLoading = true;
+      })
       .addCase(fetchThreads.fulfilled, (state, { payload }) => {
         state.threads = payload;
         state.isLoading = false;
@@ -89,21 +92,27 @@ export const threadsSlice = createSlice({
         state.threads = [...state.threads, payload];
         state.isLoading = false;
       })
-      .addCase(
-        fetchUpdateThread.fulfilled || fetchDeleteThread.fulfilled,
-        (state) => {
-          state.isLoading = false;
-        },
-      )
-      .addCase(
-        fetchThread.rejected ||
-          fetchUpdateThread.rejected ||
-          fetchDeleteThread.rejected,
-        (state, { payload }) => {
-          state.isLoading = false;
-          state.error = payload;
-        },
-      );
+      .addCase(fetchUpdateThread.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(fetchDeleteThread.fulfilled, (state, { payload }) => {
+        state.threads = state.threads.filter(
+          (thread) => thread.post.id.toString() !== payload,
+        );
+        state.isLoading = false;
+      })
+      .addCase(fetchThread.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+      .addCase(fetchUpdateThread.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+      .addCase(fetchDeleteThread.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      });
   },
 });
 

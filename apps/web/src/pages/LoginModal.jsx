@@ -34,8 +34,9 @@ function LoginModal() {
         },
       });
       loginAuth(respone.data);
+      unShowModal();
     } catch (error) {
-      console.log(error);
+      alert('กรุณาเข้าสู่ระบบใหม่อีกครั้ง');
     }
   };
 

@@ -2,16 +2,16 @@ import { Button, Input } from '@kwd/ui';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { BACKEND_ENDPOINT } from '../config.json';
-import { useAuth } from '../stores/AuthReducer/Hook';
+import { useModal } from '../stores/ModalReducer/Hook';
 
 function SignupModal(props) {
+  const { showModal } = useModal();
   const [emailAddress, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [givenname, setGivename] = useState('');
   const [surname, setSurname] = useState('');
   const [password, setPassword] = useState('');
   const handleKeyDown = () => {};
-  const { SetAccessToken, loginAuth } = useAuth();
   const SinupHandleSubmit = async (e) => {
     e.preventDefault();
     const data = {
@@ -22,17 +22,19 @@ function SignupModal(props) {
       surname,
     };
     try {
-      const res = await axios.post(
+      await axios.post(
         `${BACKEND_ENDPOINT}/auth/register`,
         JSON.stringify(data),
         {
           headers: { 'Content-Type': 'application/json' },
         },
       );
-      loginAuth(data);
-      SetAccessToken(res.data);
+
+      alert('คุณลงทะเบียนสำเร็จแล้ว ยินดีต้อนรับ!');
+      props.changeSignupState(false);
+      showModal();
     } catch (error) {
-      console.log(error);
+      alert('สมัครสมาชิกไม่สำเร็จ กรุณากรอกข้อมูลให้ถูกต้อง');
     }
   };
   return (

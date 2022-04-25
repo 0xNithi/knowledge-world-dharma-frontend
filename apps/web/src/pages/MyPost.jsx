@@ -5,23 +5,24 @@ import { BACKEND_ENDPOINT } from '../config.json';
 import { useProduct } from '../stores/ProductReducer/Hook';
 import Post from './Posts';
 import Threaditem from './Threaditem';
-import Announcements from '../Components/Announcements';
-
-function Home(props) {
+import { useAuth } from '../stores/AuthReducer/Hook';
+function MyPost(props) {
   const { setItemAction, getItem } = useProduct();
   const [selectFilter, setSelectFilter] = useState(0);
   const { items } = getItem();
   const GetallPost = async () => {
     const res = await axios.get(`${BACKEND_ENDPOINT}/api/post`);
     setItemAction(res.data);
-    console.log(res.data);
   };
 
   const SearchList = useCallback(() => {
     if (!items) return [];
     return items
       .filter((item) => {
-        return !!!item.post.hideStatus;
+        const { getUser } = useAuth();
+
+        const user = getUser();
+        return item.post.userId === user.user.id;
       })
       .filter((item) => {
         return item.post.hashTag != null;
@@ -32,9 +33,6 @@ function Home(props) {
         } else {
           return word.post.hashTag.includes(props.searchWord);
         }
-      })
-      .filter((hidstatus) => {
-        return hidstatus.post.hideStatus !== true;
       })
       .sort(function (x, y) {
         if (selectFilter === '1') {
@@ -53,9 +51,7 @@ function Home(props) {
 
   return (
     <>
-      <div className="flex justify-center w-full mt-20">
-        <Announcements />
-      </div>
+      <div className="mt-20 w-full flex justify-center"></div>
       <Post changeSelectFilterState={(word) => setSelectFilter(word)} />
       {items &&
         SearchList()
@@ -65,4 +61,4 @@ function Home(props) {
   );
 }
 
-export default Home;
+export default MyPost;
