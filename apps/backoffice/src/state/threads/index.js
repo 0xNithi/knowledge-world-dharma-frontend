@@ -51,8 +51,8 @@ export const fetchDeleteThread = createAsyncThunk(
   'threads/fetchDeleteThread',
   async ({ slug, accessToken }, { rejectWithValue }) => {
     try {
-      const response = await ThreadAPI.delete({ slug, accessToken });
-      return response.data;
+      await ThreadAPI.delete({ slug, accessToken });
+      return slug;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         return rejectWithValue(error.response.data);
@@ -95,7 +95,10 @@ export const threadsSlice = createSlice({
       .addCase(fetchUpdateThread.fulfilled, (state) => {
         state.isLoading = false;
       })
-      .addCase(fetchDeleteThread.fulfilled, (state) => {
+      .addCase(fetchDeleteThread.fulfilled, (state, { payload }) => {
+        state.threads = state.threads.filter(
+          (thread) => thread.post.id.toString() !== payload,
+        );
         state.isLoading = false;
       })
       .addCase(fetchThread.rejected, (state, { payload }) => {
