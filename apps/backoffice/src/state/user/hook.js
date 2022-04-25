@@ -5,7 +5,6 @@ import {
   initialize as initializeAction,
   logout as logoutAction,
   fetchLogin,
-  fetchRegister,
   fetchUser,
 } from '.';
 
@@ -28,13 +27,6 @@ export const useUser = () => {
     (state) => state.user,
   );
 
-  const handleRegister = useCallback(
-    ({ data }) => {
-      dispatch(fetchRegister({ data }));
-    },
-    [dispatch],
-  );
-
   const handleLogin = useCallback(
     ({ data }) => {
       dispatch(fetchLogin({ data }));
@@ -55,7 +47,6 @@ export const useUser = () => {
     accessToken,
     isLoading,
     error,
-    handleRegister,
     handleLogin,
     handleLogout,
   };

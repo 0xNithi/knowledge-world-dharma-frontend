@@ -10,21 +10,6 @@ export const initialState = {
   error: null,
 };
 
-export const fetchRegister = createAsyncThunk(
-  'user/fetchRegister',
-  async ({ data }, { rejectWithValue }) => {
-    try {
-      const response = await UserAPI.register({ data });
-      return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return rejectWithValue(error.response.data);
-      }
-      throw error;
-    }
-  },
-);
-
 export const fetchLogin = createAsyncThunk(
   'user/fetchLogin',
   async ({ data }, { rejectWithValue }) => {
@@ -78,17 +63,11 @@ export const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchRegister.pending, (state) => {
-        state.isLoading = true;
-      })
       .addCase(fetchLogin.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(fetchUser.pending, (state) => {
         state.isLoading = true;
-      })
-      .addCase(fetchRegister.fulfilled, (state) => {
-        state.isLoading = false;
       })
       .addCase(fetchLogin.fulfilled, (state, { payload }) => {
         state.accessToken = payload;
@@ -97,10 +76,6 @@ export const userSlice = createSlice({
       .addCase(fetchUser.fulfilled, (state, { payload }) => {
         state.user = payload;
         state.isLoading = false;
-      })
-      .addCase(fetchRegister.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        state.error = payload;
       })
       .addCase(fetchLogin.rejected, (state, { payload }) => {
         state.isLoading = false;
