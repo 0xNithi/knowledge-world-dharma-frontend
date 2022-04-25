@@ -16,7 +16,7 @@
 }
 
 .btn-primary {
-  @apply text-white bg-emerald-300 hover:bg-emerald-200;
+  @apply text-white bg-emerald-400 hover:bg-emerald-300;
   @apply dark:bg-emerald-500 dark:hover:bg-emerald-400;
 }
 .dark .btn-primary {
