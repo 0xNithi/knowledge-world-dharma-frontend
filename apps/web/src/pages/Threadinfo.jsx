@@ -17,7 +17,7 @@ function Threadinfo() {
 
       setItem(res.data);
     } catch (error) {
-      console.log(error);
+      alert(error.message);
     }
   };
   useEffect(() => {
@@ -28,7 +28,7 @@ function Threadinfo() {
     <div className="flex flex-col items-center w-3/5 h-full mt-20 bg-white rounded-md">
       <div className="flex flex-col items-center w-full">
         <div className="flex flex-row items-start w-11/12 mt-2">
-          <div className="text-xs font-medium">
+          <div className="px-2 text-xs font-medium text-white bg-green-700 rounded-full">
             {item && item.post.hashTag ? (
               `/${item.post.hashTag}`
             ) : (
@@ -36,12 +36,17 @@ function Threadinfo() {
             )}
           </div>
           <div className="ml-2 text-xs text-slate-400">
-            {item && <span> Posted by </span>}
+            {item && <span> สร้างโดย {item ? item.owner : 0}</span>}
           </div>
         </div>
-        <div className="w-11/12 my-5 ">
+        <div className="flex flex-row items-start w-11/12 mt-2">
+          <div className="text-xs font-bold ">
+            <span className="text-lg">หัวข้อ: {item ? item.post.title : 0}</span>
+          </div>
+        </div>
+        <div className="w-11/12 mt-2 mb-5 ">
           <span className="text-sm ">
-            {item ? parse(item.post.content) : <p>no content</p>}
+            {item ? parse(item.post.content) : <p>ไม่มีข้อมูล</p>}
           </span>
         </div>
       </div>
@@ -56,7 +61,7 @@ function Threadinfo() {
             <span className="mr-1 text-sm">
               {item ? item.comments.length : 0}
             </span>
-            <span className="text-sm">Comments</span>
+            <span className="text-sm">ความคิดเห็น</span>
           </div>
         </Link>
       </div>

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { convertToRaw, EditorState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { BACKEND_ENDPOINT } from '../config.json';
@@ -15,6 +16,7 @@ function PostForm() {
   );
   const [title, setTitle] = useState('');
   const [hashtag, setHashtag] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,8 +49,9 @@ function PostForm() {
       });
 
       addItemAction(respone.data);
+      navigate('/');
     } catch (error) {
-      console.log(error);
+      alert(error.message);
     }
   };
 
@@ -60,7 +63,7 @@ function PostForm() {
       >
         <Input
           label=""
-          placeholder="Title"
+          placeholder="หัวข้อ"
           className="!w-11/12 mt-6"
           onChange={(e) => {
             setTitle(e.target.value);
@@ -68,7 +71,7 @@ function PostForm() {
         />
         <Input
           label=""
-          placeholder="Hashtag"
+          placeholder="หมวดหมู่"
           className="!w-11/12 mt-2"
           onChange={(e) => {
             setHashtag(e.target.value);
@@ -85,7 +88,7 @@ function PostForm() {
         </div>
         <div className="my-3">
           <Button color="primary" size="md" type="submit">
-            Button
+            สร้างกระทู้
           </Button>
         </div>
       </form>

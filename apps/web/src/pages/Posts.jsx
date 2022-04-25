@@ -14,7 +14,7 @@ function Posts(props) {
       <div className="flex flex-row items-center w-full h-full gap-4">
         {user.user ? (
           <Link to="/postform" className="w-9/12 ml-6 ">
-            <Input label="" placeholder="Create Post" />
+            <Input label="" placeholder="สร้างกระทู้" />
           </Link>
         ) : (
           <div
@@ -24,7 +24,7 @@ function Posts(props) {
             tabIndex="0"
             onClick={showModal}
           >
-            <Input label="" placeholder="Create Post" />
+            <Input label="" placeholder="สร้างกระทู้" />
           </div>
         )}
         <div className="flex justify-center w-2/12 mt-3 mr-2">
@@ -38,10 +38,10 @@ function Posts(props) {
               style={{ padding: '5px 5px' }}
             >
               <option selected value="0">
-                Filter
+                เรียงตาม
               </option>
-              <option value="1">by most like</option>
-              <option value="2">by comments</option>
+              <option value="1">ความรู้สึกมากที่สุด</option>
+              <option value="2">ความเห็นมากที่สุด</option>
             </select>
           </div>
         </div>

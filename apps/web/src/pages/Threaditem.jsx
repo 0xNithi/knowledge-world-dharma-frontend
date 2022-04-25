@@ -40,7 +40,7 @@ function Threaditem(props) {
       );
       deleteItemAction(respone.data.post.id);
     } catch (error) {
-      console.log(error);
+      alert(error.message);
     }
   };
 
@@ -77,7 +77,7 @@ function Threaditem(props) {
           </div>
         )}
         {showOption && (
-          <div className="absolute top-0 right-0 flex flex-col justify-center w-24 h-10 text-xs translate-x-20 translate-y-5 rounded cursor-pointer bg-neutral-300">
+          <div className="absolute top-0 right-0 flex flex-col justify-center w-24 h-18 text-xs translate-x-20 translate-y-5 rounded cursor-pointer bg-neutral-300">
             <ul className="ml-3">
               <Link to={`/editform/${props.item.post && props.item.post.id}`}>
                 <li>edit</li>
@@ -95,7 +95,7 @@ function Threaditem(props) {
             </ul>
           </div>
         )}
-        <div className="relative flex flex-col items-center w-full overflow-hidden ">
+        <div className="relative flex flex-col items-center w-full overflow-hidden">
           <div className="flex flex-row items-start w-11/12 mt-2">
             <span className="bg-green-700 text-xs font-medium text-white px-2 rounded-full">
               {props.item && props.item.post.hashTag ? (
@@ -105,17 +105,30 @@ function Threaditem(props) {
               )}
             </span>
             <div className="ml-2 text-xs text-slate-400">
-              Posted by {props.item.owner}
+              สร้างโดย {props.item.owner}
             </div>
           </div>
+          <span className="ml-10 text-lg self-start">
+            หัวข้อ: {props.item ? props.item.post.title : 0}
+          </span>
           <div className="w-11/12 mt-2 ">
             <span className="text-sm ">
-              {props.item ? parse(props.item.post.content) : <p>loading...</p>}
+              {props.item ? (
+                parse(props.item.post.content)
+              ) : (
+                <p>กำลังโหลด...</p>
+              )}
             </span>
           </div>
           <div className="absolute bottom-0 w-4/5 h-2 bg-white left-5 opacity-95 blur-sm">
             {}
           </div>
+          <Link
+            className="mt-4 bg-green-600 rounded-full px-1 text-white"
+            to={`/thredinfo/${props.item.post && props.item.post.id}`}
+          >
+            ดูเพิ่มเติม
+          </Link>
         </div>
         <div className="flex flex-row items-center justify-between w-full h-10 px-1 mt-2 rounded-b-lg bg-slate-700">
           <div className="flex flex-row items-center">
@@ -129,10 +142,10 @@ function Threaditem(props) {
                 {props.item.comments ? (
                   props.item.comments.length
                 ) : (
-                  <p>loading...</p>
+                  <p>กำลังโหลด...</p>
                 )}
               </span>
-              <span className="text-sm text-white">Comments</span>
+              <span className="text-sm text-white">ความคิดเห็น</span>
             </div>
           </Link>
         </div>

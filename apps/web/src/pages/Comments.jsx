@@ -16,14 +16,14 @@ function Comments({ parentId }) {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(),
   );
-  
+
   const [item, setItem] = useState(undefined);
   const GetPost = async () => {
     try {
       const res = await axios.get(`${BACKEND_ENDPOINT}/api/post/${parentId}`);
       setItem(res.data);
     } catch (error) {
-      console.log(error);
+      alert(error.message);
     }
   };
 
@@ -50,7 +50,7 @@ function Comments({ parentId }) {
       const res = await axios.get(`${BACKEND_ENDPOINT}/api/post/${parentId}`);
       setItem(res.data);
     } catch (error) {
-      console.log(error);
+      alert(error.message);
     }
   };
   return (
@@ -71,7 +71,7 @@ function Comments({ parentId }) {
           </div>
           <div div className="mt-4 ">
             <Button color="primary" type="submit">
-              write
+              แสดงความคิดเห็น
             </Button>
           </div>
         </form>
@@ -79,7 +79,14 @@ function Comments({ parentId }) {
         {item && (
           <div className="w-full h-full bg-neutral-800">
             {item.comments.map((comment) => (
-              <CommentItem comment={comment} parentId={parentId} item={item} changesetItem={(word)=>{setItem(word)}}/>
+              <CommentItem
+                comment={comment}
+                parentId={parentId}
+                item={item}
+                changesetItem={(word) => {
+                  setItem(word);
+                }}
+              />
             ))}
           </div>
         )}

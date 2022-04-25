@@ -149,8 +149,8 @@ function Reactions({ id }) {
         );
       })}
       {item && (
-        <div className="flex text-sm bg-white rounded-full py-1 px-2 shadow-lg">
-          {item.reacts.length} Reacts
+        <div className="flex text-sm bg-white rounded-full py-1 px-2 shadow-lg cursor-default">
+          {item.reacts.length} คนแสดงความรู้สึก
         </div>
       )}
     </div>

@@ -8,6 +8,7 @@ import {
   convertFromHTML,
   convertToRaw,
 } from 'draft-js';
+import { useNavigate } from 'react-router-dom';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
@@ -25,6 +26,7 @@ function EditForm() {
   const [HideStatus, sethideStatus] = useState(false);
   const [allPost, setAllPost] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const getAllPost = useCallback(async () => {
     setLoading(true);
@@ -73,7 +75,7 @@ function EditForm() {
 
       setEditorState(EditorState.createWithContent(state));
     } catch (error) {
-      console.log(error);
+      alert(error.message);
     } finally {
       setLoading(false);
     }
@@ -107,8 +109,9 @@ function EditForm() {
         },
       );
     } catch (error) {
-      console.log(error);
+      alert(error.message);
     }
+    navigate('/');
   };
   useEffect(() => {
     getPost();
@@ -162,7 +165,7 @@ function EditForm() {
               </div>
               {!loading && (
                 <div className="flex flex-col mt-1 items-left">
-                  <span>สถานะ</span>
+                  <span>ซ่อน?</span>
                   <label htmlFor="toggle-switch" className="mt-2">
                     <input
                       type="checkbox"
@@ -189,7 +192,7 @@ function EditForm() {
           </div>
           <div className="my-3">
             <Button color="primary" size="md" type="submit">
-              Edit
+              แก้ไขกระทู้
             </Button>
           </div>
         </form>

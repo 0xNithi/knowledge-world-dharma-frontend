@@ -99,8 +99,8 @@ function CommentItem(props) {
         )}
         <div className="w-11/12 mt-4 ">
           <div className="flex flex-row items-start w-11/12 mt-2">
-            <div className="flex flex-row ml-2 text-xs text-slate-400">
-              {props.comment && <span> Posted by {props.comment.owner} </span>}
+            <div className="flex flex-row text-xs text-slate-400">
+              {props.comment && <span> แสดงความคิดเห็นโดย {props.comment.owner} </span>}
             </div>
           </div>
           <div className="w-11/12 my-5 ">
@@ -108,7 +108,7 @@ function CommentItem(props) {
               {props.comment ? (
                 parse(props.comment.post.content)
               ) : (
-                <p>no content</p>
+                <p>ไม่มีข้อมูล</p>
               )}
             </span>
           </div>
