@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { login, logout, setAccessToken } from './AuthReducer';
+import { login, logout, setAccessToken, setNewUser } from './AuthReducer';
 
 export function useAuth() {
   const dispatch = useDispatch();
@@ -16,7 +16,11 @@ export function useAuth() {
   function getUser() {
     return UserState;
   }
+  function SetNewUser(data) {
+    dispatch(setNewUser(data));
+  }
   return {
+    SetNewUser,
     SetAccessToken,
     getUser,
     loginAuth,
