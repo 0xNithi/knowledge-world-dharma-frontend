@@ -1,17 +1,18 @@
+/* eslint-disable */
 import { Button, Input } from '@kwd/ui';
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import { BACKEND_ENDPOINT } from '../config.json';
 import { useAuth } from '../stores/AuthReducer/Hook';
-
 function ProfileModal(props) {
-  const { getUser, SetNewUser } = useAuth();
+  const { getUser, SetNewUser, logoutAuth } = useAuth();
   const { user } = getUser();
-
   const [username, setName] = useState('');
   const [emailAddress, setEmail] = useState('');
   const [surname, setSurname] = useState('');
   const [givenname, setGivenname] = useState('');
+  const [preUsername, setPreUsername] = useState('');
+  const [password, setPassword] = useState('');
   const handleKeyDown = () => {};
   const getUserDetail = useCallback(async () => {
     try {
@@ -25,12 +26,13 @@ function ProfileModal(props) {
 
       setEmail(res.data.emailAddress);
       setName(res.data.username);
+      setPreUsername(res.data);
       setSurname(res.data.surname);
       setGivenname(res.data.givenName);
     } catch (error) {
       console.log(error);
     }
-  }, [user.id]);
+  }, []);
   const handleUnregister = async (e) => {
     e.preventDefault();
     const Token = JSON.parse(localStorage.getItem('app_user')).accessToken;
@@ -39,38 +41,69 @@ function ProfileModal(props) {
         Authorization: `Bearer ${Token}`,
       },
     });
+    props.changeMenuBarState(false);
+    props.changeProfileState(false);
+    logoutAuth();
+    localStorage.clear();
+
+    alert('ท่านได้ยกเลิกการเป็นสมาชิกแล้ว');
   };
   const submitHandle = async (e) => {
     e.preventDefault();
-    const data = {
-      username,
-      emailAddress,
-      surname,
-      givenname,
-    };
     try {
       const Token = JSON.parse(localStorage.getItem('app_user')).accessToken;
-      await axios.put(
-        `${BACKEND_ENDPOINT}/auth/editProfile/${user.id}`,
-        JSON.stringify(data),
-        {
+
+      const data = {
+        username,
+        emailAddress,
+        surname,
+        givenname,
+        password: password.length > 0 ? password : null,
+      };
+
+      if (preUsername.username === username && password.length === 0) {
+        const Token = JSON.parse(localStorage.getItem('app_user')).accessToken;
+        await axios.put(
+          `${BACKEND_ENDPOINT}/auth/editProfile/${user.id}`,
+          JSON.stringify(data),
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${Token}`,
+            },
+          },
+        );
+        const respone = await axios.get(`${BACKEND_ENDPOINT}/auth/profile`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${Token}`,
           },
-        },
-      );
-      const respone = await axios.get(`${BACKEND_ENDPOINT}/auth/profile`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${Token}`,
-        },
-      });
+        });
 
-      SetNewUser(respone.data);
-      console.log(respone.data);
+        SetNewUser(respone.data);
+
+        props.changeMenuBarState(false);
+        props.changeProfileState(false);
+        alert('ทำการแก้ไขข้อมูลเรียบร้อย');
+      } else {
+        await axios.put(
+          `${BACKEND_ENDPOINT}/auth/editProfile/${preUsername.id}`,
+          JSON.stringify(data),
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${Token}`,
+            },
+          },
+        );
+        logoutAuth();
+
+        props.changeMenuBarState(false);
+        props.changeProfileState(false);
+        alert('กรุณาเข้าสู่ระบบใหม่อีกครั้ง');
+      }
     } catch (error) {
-      console.log(error);
+      alert('เข้าสู่ระบบไม่สำเร็จ');
     }
   };
   useEffect(() => {
@@ -118,6 +151,16 @@ function ProfileModal(props) {
               value={surname}
               onChange={(e) => {
                 setSurname(e.target.value);
+              }}
+            />
+
+            <Input
+              label="รหัสผ่าน"
+              type="password"
+              placeholder="รหัสผ่าน"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
               }}
             />
           </div>

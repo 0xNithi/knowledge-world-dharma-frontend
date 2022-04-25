@@ -48,7 +48,7 @@ function PostForm() {
 
       addItemAction(respone.data);
     } catch (error) {
-      console.log(error);
+      alert(error.message);
     }
   };
 

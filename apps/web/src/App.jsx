@@ -16,11 +16,14 @@ function App() {
   const modal = getModal().ModalState;
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showSignupModal, setshowSignupModal] = useState(false);
+  const [showmenu, setShowmenu] = useState(false);
   const [searchWord, setsearchWord] = useState('');
   return (
     <div className="relative w-full min-h-screen font-mono bg-gradient-to-b from-emerald-400 to-lime-200">
       <div className="flex flex-col items-center w-full h-full">
         <Topbar
+          showmenu={showmenu}
+          changeMenuBarState={(data) => setShowmenu(data)}
           changeSignupState={(data) => setshowSignupModal(data)}
           changeProfileState={(word) => setShowProfileModal(word)}
           changeWordState={(word) => setsearchWord(word)}
@@ -38,6 +41,7 @@ function App() {
         )}
         {showProfileModal && (
           <ProfileModal
+            changeMenuBarState={(data) => setShowmenu(data)}
             showProfileModal={showProfileModal}
             changeProfileState={(word) => setShowProfileModal(word)}
           />

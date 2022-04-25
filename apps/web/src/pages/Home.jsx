@@ -14,6 +14,7 @@ function Home(props) {
   const GetallPost = async () => {
     const res = await axios.get(`${BACKEND_ENDPOINT}/api/post`);
     setItemAction(res.data);
+    console.log(res.data);
   };
 
   const SearchList = useCallback(() => {
@@ -28,6 +29,9 @@ function Home(props) {
         } else {
           return word.post.hashTag.includes(props.searchWord);
         }
+      })
+      .filter((hidstatus) => {
+        return hidstatus.post.hideStatus !== true;
       })
       .sort(function (x, y) {
         if (selectFilter === '1') {
@@ -46,11 +50,14 @@ function Home(props) {
 
   return (
     <>
-      <div className="mt-20 w-full flex justify-center">
+      <div className="flex justify-center w-full mt-20">
         <Announcements />
       </div>
       <Post changeSelectFilterState={(word) => setSelectFilter(word)} />
-      {items && SearchList().reverse().map((item) => <Threaditem item={item} />)}
+      {items &&
+        SearchList()
+          .reverse()
+          .map((item) => <Threaditem item={item} />)}
     </>
   );
 }

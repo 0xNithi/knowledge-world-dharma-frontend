@@ -75,7 +75,7 @@ function EditForm() {
 
       setEditorState(EditorState.createWithContent(state));
     } catch (error) {
-      console.log(error);
+      alert(error.message);
     } finally {
       setLoading(false);
     }
@@ -110,7 +110,7 @@ function EditForm() {
         },
       );
     } catch (error) {
-      console.log(error);
+      alert(error.message);
     }
   };
   useEffect(() => {
