@@ -86,14 +86,26 @@ export const fetchBanUser = createAsyncThunk(
   async ({ slug, accessToken }, { rejectWithValue }) => {
     try {
       const response = await UserAPI.ban({ slug, accessToken });
-      console.log({
-        slug,
-        data: { banned: response.data.toLowerCase().includes('true') },
-      });
       return {
         slug,
         data: { banned: response.data.toLowerCase().includes('true') },
       };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response.data);
+      }
+      throw error;
+    }
+  },
+);
+
+export const fetchAdminUser = createAsyncThunk(
+  'users/fetchAdminUser',
+  async ({ slug, accessToken }, { rejectWithValue }) => {
+    try {
+      await UserAPI.admin({ slug, accessToken });
+      const response = await UserAPI.all();
+      return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         return rejectWithValue(error.response.data);
@@ -131,6 +143,9 @@ export const usersSlice = createSlice({
       .addCase(fetchBanUser.pending, (state) => {
         state.isLoading = true;
       })
+      .addCase(fetchAdminUser.pending, (state) => {
+        state.isLoading = true;
+      })
       .addCase(fetchUsers.fulfilled, (state, { payload }) => {
         state.users = payload;
         state.isLoading = false;
@@ -150,6 +165,7 @@ export const usersSlice = createSlice({
           }
           return data;
         });
+        state.isLoading = false;
       })
       .addCase(fetchDeleteUser.fulfilled, (state, { payload }) => {
         state.users = state.users.filter((user) => user.id !== payload);
@@ -162,6 +178,11 @@ export const usersSlice = createSlice({
           }
           return data;
         });
+        state.isLoading = false;
+      })
+      .addCase(fetchAdminUser.fulfilled, (state, { payload }) => {
+        state.users = payload;
+        state.isLoading = false;
       })
       .addCase(fetchUser.rejected, (state, { payload }) => {
         state.error = payload;
@@ -180,6 +201,10 @@ export const usersSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(fetchBanUser.rejected, (state, { payload }) => {
+        state.error = payload;
+        state.isLoading = false;
+      })
+      .addCase(fetchAdminUser.rejected, (state, { payload }) => {
         state.error = payload;
         state.isLoading = false;
       });

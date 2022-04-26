@@ -50,11 +50,7 @@ function EditCommentForm() {
     e.preventDefault();
     const content = draftToHtml(convertToRaw(editorState.getCurrentContent()));
     let hideStatus = 0;
-    if (HideStatus === true) {
-      hideStatus = 1;
-    } else {
-      hideStatus = -1;
-    }
+    hideStatus = HideStatus === true ? 1 : -1;
     const data = {
       content,
       title,

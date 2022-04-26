@@ -78,16 +78,19 @@ function Comments({ parentId }) {
         {/* edit comments */}
         {item && (
           <div className="w-full h-full bg-neutral-800">
-            {item.comments.map((comment) => (
-              <CommentItem
-                comment={comment}
-                parentId={parentId}
-                item={item}
-                changesetItem={(word) => {
-                  setItem(word);
-                }}
-              />
-            ))}
+            {item.comments.map(
+              (comment) =>
+                !comment.post.hideStatus && (
+                  <CommentItem
+                    comment={comment}
+                    parentId={parentId}
+                    item={item}
+                    changesetItem={(word) => {
+                      setItem(word);
+                    }}
+                  />
+                ),
+            )}
           </div>
         )}
       </div>

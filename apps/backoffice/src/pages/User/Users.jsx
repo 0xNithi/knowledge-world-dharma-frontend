@@ -10,7 +10,7 @@ import { useUsers, useFetchUsers } from '../../state/users/hook';
 function Users() {
   useFetchUsers();
 
-  const { users, error, handleDelete } = useUsers();
+  const { users, handleDelete } = useUsers();
 
   const [slug, setSlug] = useState(false);
 
@@ -75,7 +75,6 @@ function Users() {
           <Button>Add User</Button>
         </Link>
       </Box>
-      {error && <Box>{error}</Box>}
       <Box className="flex flex-col">
         <Table columns={columns} data={users} />
       </Box>
