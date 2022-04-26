@@ -99,7 +99,7 @@ function Reactions({ id }) {
         setSelectedEmoji(state);
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.message);
     }
     getPost();
   };
@@ -134,23 +134,23 @@ function Reactions({ id }) {
   }, [item]);
 
   return (
-    <div className="flex space-x-2">
+    <div className="flex space-x-2 w-full">
       {REACTIONS.map((react) => {
         return (
           <button
-            className={`flex text-sm bg-white rounded-full py-1 px-2 shadow-lg space-x-1 hover:shadow-xl ${
+            className={`flex items-center text-sm bg-white rounded-full px-2 shadow-lg space-x-1 hover:shadow-xl w-12 h-6${
               selectedEmoji === react.type ? 'bg-green-500' : ''
             }`}
             onClick={() => handleReactionUpdate(react.type, selectedEmoji)}
           >
-            <p>{emojiCount[react.type]}</p>
+            <p className="w-full h-full">{emojiCount[react.type]}</p>
             <p>{react.emoji}</p>
           </button>
         );
       })}
       {item && (
-        <div className="flex text-sm bg-white rounded-full py-1 px-2 shadow-lg cursor-default">
-          {item.reacts.length} คนแสดงความรู้สึก
+        <div className="flex text-sm bg-white rounded-full py-1 px-2 shadow-lg cursor-default w-18 h-6 ">
+          {item.reacts.length} <span className="text-sm">คนแสดงความรู้สึก</span>
         </div>
       )}
     </div>
