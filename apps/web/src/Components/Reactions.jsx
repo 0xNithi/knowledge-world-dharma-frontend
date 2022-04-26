@@ -138,8 +138,8 @@ function Reactions({ id }) {
       {REACTIONS.map((react) => {
         return (
           <button
-            className={`flex items-center text-sm bg-white rounded-full px-2 shadow-lg space-x-1 hover:shadow-xl w-12 h-6${
-              selectedEmoji === react.type ? 'bg-green-500' : ''
+            className={`flex items-center text-sm bg-white rounded-full px-2 shadow-lg space-x-1 hover:shadow-xl w-12 h-6 ${
+              selectedEmoji === react.type ? '!bg-green-500' : ''
             }`}
             onClick={() => handleReactionUpdate(react.type, selectedEmoji)}
           >
