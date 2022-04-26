@@ -111,7 +111,7 @@ function Threaditem(props) {
           <span className="self-start ml-10 text-lg">
             หัวข้อ: {props.item ? props.item.post.title : 0}
           </span>
-          <div className="w-11/12 mt-2 ">
+          <div className="w-11/12 mt-2 h-8">
             <span className="text-sm ">
               {props.item ? (
                 parse(props.item.post.content)
@@ -132,7 +132,7 @@ function Threaditem(props) {
         </div>
         <div className="flex flex-row items-center justify-between w-full h-10 px-1 mt-2 rounded-b-lg bg-slate-700">
           <div className="flex flex-row items-center">
-            <div className="my-3 cursor-pointer">
+            <div className="my-3 cursor-pointer w-full">
               <Reactions id={props.item.post.id} />
             </div>
           </div>
