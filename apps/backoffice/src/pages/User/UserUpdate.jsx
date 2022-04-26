@@ -12,8 +12,6 @@ function UserUpdate() {
   const [isOpenBan, setIsOpenBan] = useState(false);
   const [isOpenDelete, setIsOpenDelete] = useState(false);
 
-  // TODO: remove this after fix backend bug
-  // eslint-disable-next-line
   const { error, handleView, handleUpdate, handleDelete, handleBan } =
     useUsers();
   const { slug } = useParams();
@@ -30,13 +28,11 @@ function UserUpdate() {
   } = useForm();
 
   const onSubmitUpdate = (data) => {
-    console.log(data);
-    // handleUpdate({ slug, data });
+    handleUpdate({ slug, data });
   };
 
   const onSubmitPassword = (data) => {
-    console.log(data);
-    // handleUpdate({ slug, data });
+    handleUpdate({ slug, data });
   };
 
   const handleOpenBan = useCallback(() => {
@@ -177,7 +173,9 @@ function UserUpdate() {
           isOpen={isOpenBan}
           onRequestClose={handleCloseBan}
           handleSubmit={handleConfirmBan}
-          content="Do you really want to ban this user?"
+          content={`Do you really want to ${
+            user?.banned ? 'unban' : 'ban'
+          } this user?`}
         />
       )}
       {isOpenDelete && (
