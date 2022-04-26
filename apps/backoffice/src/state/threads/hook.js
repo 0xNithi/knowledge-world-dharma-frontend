@@ -7,6 +7,7 @@ import {
   fetchThreads,
   fetchUpdateThread,
   fetchDeleteThread,
+  fetchCreateThread,
 } from '.';
 
 export const useFetchThreads = () => {
@@ -34,6 +35,13 @@ export const useThreads = () => {
     [threads, dispatch],
   );
 
+  const handleCreate = useCallback(
+    ({ data }) => {
+      dispatch(fetchCreateThread({ accessToken, data }));
+    },
+    [accessToken, dispatch],
+  );
+
   const handleUpdate = useCallback(
     ({ slug, data }) => {
       dispatch(fetchUpdateThread({ slug, accessToken, data }));
@@ -52,5 +60,13 @@ export const useThreads = () => {
     dispatch(initializeAction());
   }, [dispatch]);
 
-  return { threads, isLoading, error, handleView, handleUpdate, handleDelete };
+  return {
+    threads,
+    isLoading,
+    error,
+    handleView,
+    handleCreate,
+    handleUpdate,
+    handleDelete,
+  };
 };

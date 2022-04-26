@@ -59,10 +59,15 @@ function Threads() {
         // eslint-disable-next-line
         Cell: ({ row }) => (
           <div className="space-x-2">
+            <Link to={row.original.post.id.toString()}>
+              <Button>Info</Button>
+            </Link>
             <Link to={`update/${row.original.post.id}`}>
               <Button>Update</Button>
             </Link>
-            <Button onClick={handleOpen(row.original.post.id)}>Delete</Button>
+            <Button onClick={handleOpen(row.original.post.id.toString())}>
+              Delete
+            </Button>
           </div>
         ),
       },
@@ -72,7 +77,12 @@ function Threads() {
 
   return (
     <>
-      <Box className="text-lg font-medium">Thread</Box>
+      <Box className="flex flex-row justify-between">
+        <span className="text-lg font-medium">Thread</span>
+        <Link to="create">
+          <Button>Add Thread</Button>
+        </Link>
+      </Box>
       {error && <Box>{error}</Box>}
       <Box className="flex flex-col">
         <Table columns={columns} data={threads} />
