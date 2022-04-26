@@ -21,7 +21,7 @@ function App() {
           path="/"
           element={
             <ProtectedRoute
-              isAllowed={!!user && user.role.toLowerCase() === 'admin'}
+              isAllowed={Boolean(user) && user.role.toLowerCase() === 'admin'}
             >
               <Layout />
             </ProtectedRoute>
