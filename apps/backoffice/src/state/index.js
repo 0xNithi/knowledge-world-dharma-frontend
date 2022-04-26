@@ -4,6 +4,7 @@ import { save, load } from 'redux-localstorage-simple';
 import threadsReducer from './threads';
 import userReducer from './user';
 import usersReducer from './users';
+import announcementsReducer from './announcements';
 
 const PERSISTED_KEYS = {
   states: ['user'],
@@ -15,6 +16,7 @@ const store = configureStore({
     user: userReducer,
     users: usersReducer,
     threads: threadsReducer,
+    announcements: announcementsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ thunk: true }).concat(save(PERSISTED_KEYS)),

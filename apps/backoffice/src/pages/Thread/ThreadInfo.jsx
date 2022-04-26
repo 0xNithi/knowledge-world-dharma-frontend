@@ -8,28 +8,33 @@ import Box from '../../components/Box';
 import Comments from '../../components/Comments';
 import ConfirmModal from '../../components/ConfirmModal';
 import Reactions from '../../components/Reactions';
+import { useAnnouncements } from '../../state/announcements/hook';
 import { useThreads } from '../../state/threads/hook';
 
 function ThreadInfo() {
   const [thread, setThread] = useState();
+  const [isOpenAnnouncement, setIsOpenAnnouncement] = useState(false);
   const [isOpenHide, setIsOpenHide] = useState(false);
   const [isOpenDelete, setIsOpenDelete] = useState(false);
 
+  const { handleCreate } = useAnnouncements();
   const { error, handleView, handleUpdate, handleDelete } = useThreads();
   const { slug } = useParams();
 
-  const handleOpenDelete = useCallback(() => {
-    setIsOpenDelete(true);
-  }, [setIsOpenDelete]);
+  const handleOpenAnnouncement = useCallback(() => {
+    setIsOpenAnnouncement(true);
+  }, [setIsOpenAnnouncement]);
 
-  const handleCloseDelete = useCallback(() => {
-    setIsOpenDelete(false);
-  }, [setIsOpenDelete]);
+  const handleCloseAnnouncement = useCallback(() => {
+    setIsOpenAnnouncement(false);
+  }, [setIsOpenAnnouncement]);
 
-  const handleConfirmDelete = useCallback(() => {
-    handleDelete({ slug });
-    handleCloseDelete();
-  }, [slug, handleCloseDelete, handleDelete]);
+  const handleConfirmAnnouncement = useCallback(() => {
+    handleCreate({
+      slug,
+    });
+    handleCloseAnnouncement();
+  }, [slug, handleCloseAnnouncement, handleCreate]);
 
   const handleOpenHide = useCallback(() => {
     setIsOpenHide(true);
@@ -47,6 +52,19 @@ function ThreadInfo() {
     handleCloseHide();
   }, [slug, thread, handleCloseHide, handleUpdate]);
 
+  const handleOpenDelete = useCallback(() => {
+    setIsOpenDelete(true);
+  }, [setIsOpenDelete]);
+
+  const handleCloseDelete = useCallback(() => {
+    setIsOpenDelete(false);
+  }, [setIsOpenDelete]);
+
+  const handleConfirmDelete = useCallback(() => {
+    handleDelete({ slug });
+    handleCloseDelete();
+  }, [slug, handleCloseDelete, handleDelete]);
+
   useEffect(() => {
     setThread(handleView({ slug }));
   }, [slug, handleView]);
@@ -57,6 +75,7 @@ function ThreadInfo() {
         <span>Thread Info</span>
         {!error && (
           <div className="flex flex-row gap-2">
+            <Button onClick={handleOpenAnnouncement}>Announcement</Button>
             <Button onClick={handleOpenHide}>
               {thread?.post.hideStatus ? 'Show' : 'Hide'}
             </Button>
@@ -78,7 +97,7 @@ function ThreadInfo() {
             >
               <div className="flex flex-row gap-2">
                 <div className="px-2 text-xs font-medium text-white bg-green-700 rounded-full">
-                  {`/${thread.post.hashTag}`}
+                  {`/${thread.post.hashTag ?? 'general'}`}
                 </div>
                 <div className="text-xs text-slate-400">
                   Post by {thread.owner}
@@ -100,6 +119,14 @@ function ThreadInfo() {
           </div>
         )}
       </Box>
+      {isOpenAnnouncement && (
+        <ConfirmModal
+          isOpen={isOpenAnnouncement}
+          onRequestClose={handleCloseAnnouncement}
+          handleSubmit={handleConfirmAnnouncement}
+          content="Do you really want to announcement these records?"
+        />
+      )}
       {isOpenHide && (
         <ConfirmModal
           isOpen={isOpenHide}
