@@ -1,21 +1,16 @@
 import React from 'react';
-import { Annotation, ChatAlt2, Users, ViewBoards } from '@kwd/ui';
+import { Annotation, ChatAlt2, Users } from '@kwd/ui';
 
 export const links = [
-  {
-    title: 'Overview',
-    to: '/',
-    icon: <ViewBoards />,
-  },
-  {
-    title: 'Anouncement',
-    to: '/anouncement',
-    icon: <Annotation />,
-  },
   {
     title: 'Thread',
     to: '/thread',
     icon: <ChatAlt2 />,
+  },
+  {
+    title: 'Announcement',
+    to: '/announcement',
+    icon: <Annotation />,
   },
   {
     title: 'User',

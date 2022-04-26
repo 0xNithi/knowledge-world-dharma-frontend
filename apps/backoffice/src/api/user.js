@@ -30,6 +30,14 @@ const UserAPI = {
         Authorization: `Bearer ${accessToken}`,
       },
     }),
+  admin: ({ slug, accessToken }) =>
+    api({
+      method: 'put',
+      url: `/auth/setAdmin/${slug}`,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }),
   update: ({ slug, accessToken, data }) =>
     api({
       method: 'put',

@@ -1,12 +1,12 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectRoute';
+import NotFound from './pages/NotFound';
 import { useFetchUser } from './state/user/hook';
 
-const OverviewPage = React.lazy(() => import('./pages/Overview'));
-const AnouncementPage = React.lazy(() => import('./pages/Anouncement'));
+const AnnouncementPage = React.lazy(() => import('./pages/Announcement'));
 const ThreadPage = React.lazy(() => import('./pages/Thread'));
 const UserPage = React.lazy(() => import('./pages/User'));
 const LoginPage = React.lazy(() => import('./pages/Login'));
@@ -21,25 +21,18 @@ function App() {
           path="/"
           element={
             <ProtectedRoute
-              isAllowed={!!user && user.role.toLowerCase() === 'admin'}
+              isAllowed={Boolean(user) && user.role.toLowerCase() === 'admin'}
             >
               <Layout />
             </ProtectedRoute>
           }
         >
+          <Route index element={<Navigate to="announcement" />} />
           <Route
-            index
+            path="announcement/*"
             element={
               <React.Suspense fallback={<>Loading...</>}>
-                <OverviewPage />
-              </React.Suspense>
-            }
-          />
-          <Route
-            path="anouncement/*"
-            element={
-              <React.Suspense fallback={<>Loading...</>}>
-                <AnouncementPage />
+                <AnnouncementPage />
               </React.Suspense>
             }
           />
@@ -73,6 +66,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

@@ -9,23 +9,52 @@ import { useUsers } from '../../state/users/hook';
 
 function UserInfo() {
   const [user, setUser] = useState();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenBan, setIsOpenBan] = useState(false);
+  const [isOpenAdmin, setIsOpenAdmin] = useState(false);
+  const [isOpenDelete, setIsOpenDelete] = useState(false);
 
-  const { error, handleView, handleDelete } = useUsers();
+  const { error, handleView, handleDelete, handleBan, handleAdmin } =
+    useUsers();
   const { slug } = useParams();
 
-  const handleOpen = useCallback(() => {
-    setIsOpen(true);
-  }, [setIsOpen]);
+  const handleOpenBan = useCallback(() => {
+    setIsOpenBan(true);
+  }, [setIsOpenBan]);
 
-  const handleClose = useCallback(() => {
-    setIsOpen(false);
-  }, [setIsOpen]);
+  const handleCloseBan = useCallback(() => {
+    setIsOpenBan(false);
+  }, [setIsOpenBan]);
 
-  const handleSubmit = useCallback(() => {
+  const handleConfirmBan = useCallback(() => {
+    handleBan({ slug });
+    handleCloseBan();
+  }, [slug, handleCloseBan, handleBan]);
+
+  const handleOpenAdmin = useCallback(() => {
+    setIsOpenAdmin(true);
+  }, [setIsOpenAdmin]);
+
+  const handleCloseAdmin = useCallback(() => {
+    setIsOpenAdmin(false);
+  }, [setIsOpenAdmin]);
+
+  const handleConfirmAdmin = useCallback(() => {
+    handleAdmin({ slug });
+    handleCloseAdmin();
+  }, [slug, handleCloseAdmin, handleAdmin]);
+
+  const handleOpenDelete = useCallback(() => {
+    setIsOpenDelete(true);
+  }, [setIsOpenDelete]);
+
+  const handleCloseDelete = useCallback(() => {
+    setIsOpenDelete(false);
+  }, [setIsOpenDelete]);
+
+  const handleConfirmDelete = useCallback(() => {
     handleDelete({ slug });
-    handleClose();
-  }, [slug, handleClose, handleDelete]);
+    handleCloseDelete();
+  }, [slug, handleCloseDelete, handleDelete]);
 
   useEffect(() => {
     setUser(handleView({ slug }));
@@ -37,11 +66,16 @@ function UserInfo() {
         <span>User Info</span>
         {!error && (
           <div className="flex flex-row gap-2">
+            <Button onClick={handleOpenBan}>
+              {user?.banned ? 'Unban' : 'Ban'}
+            </Button>
+            <Button onClick={handleOpenAdmin}>
+              {user?.role.toLowerCase() === 'admin' ? 'Set User' : 'Set Admin'}
+            </Button>
             <Link to={`/user/update/${slug}`}>
               <Button>Update</Button>
             </Link>
-            <Button>{user?.banned ? 'Unban' : 'Ban'}</Button>
-            <Button onClick={handleOpen}>Delete</Button>
+            <Button onClick={handleOpenDelete}>Delete</Button>
           </div>
         )}
       </Box>
@@ -92,11 +126,31 @@ function UserInfo() {
           </div>
         )}
       </Box>
-      {isOpen && (
+      {isOpenBan && (
         <ConfirmModal
-          isOpen={isOpen}
-          onRequestClose={handleClose}
-          handleSubmit={handleSubmit}
+          isOpen={isOpenBan}
+          onRequestClose={handleCloseBan}
+          handleSubmit={handleConfirmBan}
+          content={`Do you really want to ${
+            user?.banned ? 'unban' : 'ban'
+          } this user?`}
+        />
+      )}
+      {isOpenAdmin && (
+        <ConfirmModal
+          isOpen={isOpenAdmin}
+          onRequestClose={handleCloseAdmin}
+          handleSubmit={handleConfirmAdmin}
+          content={`Do you really want to set ${
+            user?.role.toLowerCase() === 'admin' ? 'user' : 'admin'
+          } role this user?`}
+        />
+      )}
+      {isOpenDelete && (
+        <ConfirmModal
+          isOpen={isOpenDelete}
+          onRequestClose={handleCloseDelete}
+          handleSubmit={handleConfirmDelete}
           content="Do you really want to delete these records?"
         />
       )}

@@ -15,3 +15,47 @@
 
 @tailwind components;
 @tailwind utilities;
+
+.toolbar-class,
+.rdw-dropdown-wrapper,
+.rdw-option-wrapper,
+.rdw-editor-main {
+  @apply bg-white text-slate-800 border !border-slate-400 !rounded-md;
+  @apply dark:bg-transparent dark:text-slate-100;
+}
+.rdw-editor-main {
+  @apply p-2;
+}
+.toolbar-class img {
+  @apply dark:invert;
+}
+.rdw-dropdown-carettoopen {
+  @apply !border-t-slate-400;
+}
+.rdw-dropdown-wrapper {
+  @apply dark:hover:!bg-slate-700;
+}
+.rdw-dropdown-optionwrapper {
+  @apply !rounded-md border !border-slate-400;
+  @apply dark:bg-slate-700;
+  @apply dark:hover:bg-inherit;
+}
+.rdw-dropdownoption-active {
+  @apply dark:bg-slate-800;
+}
+.rdw-dropdownoption-default {
+  @apply dark:hover:bg-slate-800;
+}
+div[class$='-modal'],
+.rdw-image-alignment-options-popup {
+  @apply !rounded-md border !border-slate-400;
+  @apply dark:bg-slate-700;
+}
+div[class$='-modal'] input {
+  @apply bg-white text-slate-800 border !border-slate-400 !rounded-md;
+  @apply dark:bg-transparent dark:text-slate-100;
+}
+div[class$='-modal'] button {
+  @apply bg-white text-slate-800 border !border-slate-200 !rounded-md;
+  @apply dark:bg-transparent dark:text-slate-100 dark:disabled:bg-slate-600 dark:!border-slate-600;
+}
