@@ -3,14 +3,17 @@ import { Link } from 'react-router-dom';
 import { Button } from '@kwd/ui';
 
 import Box from '../../components/Box';
-import Table from '../../components/Table';
-import { useFetchThreads, useThreads } from '../../state/threads/hook';
 import ConfirmModal from '../../components/ConfirmModal';
+import Table from '../../components/Table';
+import {
+  useAnnouncements,
+  useFetchAnnouncements,
+} from '../../state/announcements/hook';
 
-function Threads() {
-  useFetchThreads();
+function Anouncements() {
+  useFetchAnnouncements();
 
-  const { threads, handleDelete } = useThreads();
+  const { announcements, handleDelete } = useAnnouncements();
 
   const [slug, setSlug] = useState(false);
 
@@ -36,7 +39,7 @@ function Threads() {
     () => [
       {
         Header: 'Id',
-        accessor: ({ post }) => post.id,
+        accessor: ({ id }) => id,
         id: 'id',
       },
       {
@@ -45,27 +48,17 @@ function Threads() {
         id: 'title',
       },
       {
-        Header: 'Status',
-        accessor: ({ post }) => {
-          if (post.hideStatus) {
-            return 'hide';
-          }
-          return 'visible';
-        },
-        id: 'status',
-      },
-      {
         Header: 'Option',
+        maxWidth: 70,
+        minWidth: 50,
+        width: 60,
         // eslint-disable-next-line
         Cell: ({ row }) => (
           <div className="space-x-2">
-            <Link to={row.original.post.id.toString()}>
+            <Link to={row.original.id.toString()}>
               <Button>Info</Button>
             </Link>
-            <Link to={`update/${row.original.post.id}`}>
-              <Button>Update</Button>
-            </Link>
-            <Button onClick={handleOpen(row.original.post.id.toString())}>
+            <Button onClick={handleOpen(row.original.id.toString())}>
               Delete
             </Button>
           </div>
@@ -78,13 +71,10 @@ function Threads() {
   return (
     <>
       <Box className="flex flex-row justify-between">
-        <span className="text-lg font-medium">Thread</span>
-        <Link to="create">
-          <Button>Add Thread</Button>
-        </Link>
+        <span className="text-lg font-medium">Anouncements</span>
       </Box>
       <Box className="flex flex-col">
-        <Table columns={columns} data={threads} />
+        <Table columns={columns} data={announcements} />
       </Box>
       {slug && (
         <ConfirmModal
@@ -97,4 +87,4 @@ function Threads() {
   );
 }
 
-export default Threads;
+export default Anouncements;

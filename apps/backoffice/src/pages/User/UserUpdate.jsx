@@ -10,12 +10,17 @@ import { useUsers } from '../../state/users/hook';
 function UserUpdate() {
   const [user, setUser] = useState(null);
   const [isOpenBan, setIsOpenBan] = useState(false);
+  const [isOpenAdmin, setIsOpenAdmin] = useState(false);
   const [isOpenDelete, setIsOpenDelete] = useState(false);
 
-  // TODO: remove this after fix backend bug
-  // eslint-disable-next-line
-  const { error, handleView, handleUpdate, handleDelete, handleBan } =
-    useUsers();
+  const {
+    error,
+    handleView,
+    handleUpdate,
+    handleDelete,
+    handleBan,
+    handleAdmin,
+  } = useUsers();
   const { slug } = useParams();
   const {
     register: registerUpdate,
@@ -30,13 +35,11 @@ function UserUpdate() {
   } = useForm();
 
   const onSubmitUpdate = (data) => {
-    console.log(data);
-    // handleUpdate({ slug, data });
+    handleUpdate({ slug, data });
   };
 
   const onSubmitPassword = (data) => {
-    console.log(data);
-    // handleUpdate({ slug, data });
+    handleUpdate({ slug, data });
   };
 
   const handleOpenBan = useCallback(() => {
@@ -51,6 +54,19 @@ function UserUpdate() {
     handleBan({ slug });
     handleCloseBan();
   }, [slug, handleCloseBan, handleBan]);
+
+  const handleOpenAdmin = useCallback(() => {
+    setIsOpenAdmin(true);
+  }, [setIsOpenAdmin]);
+
+  const handleCloseAdmin = useCallback(() => {
+    setIsOpenAdmin(false);
+  }, [setIsOpenAdmin]);
+
+  const handleConfirmAdmin = useCallback(() => {
+    handleAdmin({ slug });
+    handleCloseAdmin();
+  }, [slug, handleCloseAdmin, handleAdmin]);
 
   const handleOpenDelete = useCallback(() => {
     setIsOpenDelete(true);
@@ -87,6 +103,11 @@ function UserUpdate() {
             <div className="flex flex-row gap-2">
               <Button onClick={handleOpenBan}>
                 {user?.banned ? 'Unban' : 'Ban'}
+              </Button>
+              <Button onClick={handleOpenAdmin}>
+                {user?.role.toLowerCase() === 'admin'
+                  ? 'Set User'
+                  : 'Set Admin'}
               </Button>
               <Button onClick={handleOpenDelete}>Delete</Button>
             </div>
@@ -177,7 +198,19 @@ function UserUpdate() {
           isOpen={isOpenBan}
           onRequestClose={handleCloseBan}
           handleSubmit={handleConfirmBan}
-          content="Do you really want to ban this user?"
+          content={`Do you really want to ${
+            user?.banned ? 'unban' : 'ban'
+          } this user?`}
+        />
+      )}
+      {isOpenAdmin && (
+        <ConfirmModal
+          isOpen={isOpenAdmin}
+          onRequestClose={handleCloseAdmin}
+          handleSubmit={handleConfirmAdmin}
+          content={`Do you really want to set ${
+            user?.role.toLowerCase() === 'admin' ? 'user' : 'admin'
+          } role this user?`}
         />
       )}
       {isOpenDelete && (

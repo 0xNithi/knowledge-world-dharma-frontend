@@ -25,6 +25,22 @@ export const fetchThread = createAsyncThunk(
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response.statusText);
+      }
+      throw error;
+    }
+  },
+);
+
+export const fetchCreateThread = createAsyncThunk(
+  'threads/fetchCreateThread',
+  async ({ accessToken, data }, { rejectWithValue }) => {
+    try {
+      await ThreadAPI.create({ accessToken, data });
+      const response = await ThreadAPI.all();
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
         return rejectWithValue(error.response.data);
       }
       throw error;
@@ -33,10 +49,11 @@ export const fetchThread = createAsyncThunk(
 );
 
 export const fetchUpdateThread = createAsyncThunk(
-  'threads/fetchCreateThread',
+  'threads/fetchUpdateThread',
   async ({ slug, accessToken, data }, { rejectWithValue }) => {
     try {
-      const response = await ThreadAPI.update({ slug, accessToken, data });
+      await ThreadAPI.update({ slug, accessToken, data });
+      const response = await ThreadAPI.all();
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -52,7 +69,8 @@ export const fetchDeleteThread = createAsyncThunk(
   async ({ slug, accessToken }, { rejectWithValue }) => {
     try {
       await ThreadAPI.delete({ slug, accessToken });
-      return slug;
+      const response = await ThreadAPI.all();
+      return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         return rejectWithValue(error.response.data);
@@ -78,6 +96,9 @@ export const threadsSlice = createSlice({
       .addCase(fetchThread.pending, (state) => {
         state.isLoading = true;
       })
+      .addCase(fetchCreateThread.pending, (state) => {
+        state.isLoading = true;
+      })
       .addCase(fetchUpdateThread.pending, (state) => {
         state.isLoading = true;
       })
@@ -92,16 +113,23 @@ export const threadsSlice = createSlice({
         state.threads = [...state.threads, payload];
         state.isLoading = false;
       })
-      .addCase(fetchUpdateThread.fulfilled, (state) => {
+      .addCase(fetchCreateThread.fulfilled, (state, { payload }) => {
+        state.threads = payload;
+        state.isLoading = false;
+      })
+      .addCase(fetchUpdateThread.fulfilled, (state, { payload }) => {
+        state.threads = payload;
         state.isLoading = false;
       })
       .addCase(fetchDeleteThread.fulfilled, (state, { payload }) => {
-        state.threads = state.threads.filter(
-          (thread) => thread.post.id.toString() !== payload,
-        );
+        state.threads = payload;
         state.isLoading = false;
       })
       .addCase(fetchThread.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+      .addCase(fetchCreateThread.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.error = payload;
       })
