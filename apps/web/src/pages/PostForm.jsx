@@ -61,22 +61,25 @@ function PostForm() {
         onSubmit={handleSubmit}
         className="flex flex-col items-center w-3/4 mt-20 bg-white rounded-md"
       >
-        <Input
-          label=""
-          placeholder="หัวข้อ"
-          className="!w-11/12 mt-6"
-          onChange={(e) => {
-            setTitle(e.target.value);
-          }}
-        />
-        <Input
-          label=""
-          placeholder="หมวดหมู่"
-          className="!w-11/12 mt-2"
-          onChange={(e) => {
-            setHashtag(e.target.value);
-          }}
-        />
+        <div className="w-full max-w-xl">
+          <Input
+            label=""
+            placeholder="หัวข้อ"
+            className="!w-full mt-6"
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
+          />
+          <Input
+            label=""
+            placeholder="หมวดหมู่"
+            className="!w-full mt-2"
+            onChange={(e) => {
+              setHashtag(e.target.value);
+            }}
+          />
+        </div>
+
         <div className="w-11/12 mt-4">
           <Editor
             editorState={editorState}

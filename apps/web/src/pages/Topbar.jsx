@@ -26,8 +26,8 @@ function Topbar(props) {
             🕌 <span className="text-lg underline">มุสลิมทอล์ค</span>
           </div>
         </Link>
-        <div className="flex flex-row items-center justify-center w-full ">
-          <div className="w-6/12 ml-18">
+        <div className="flex flex-row items-center justify-center w-3/4 ">
+          <div className="w-8/12 ">
             <Input
               label=""
               placeholder="ค้นหาจากหมวดหมู่"
