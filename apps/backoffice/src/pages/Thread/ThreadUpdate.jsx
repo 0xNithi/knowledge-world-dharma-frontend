@@ -98,6 +98,7 @@ function ThreadUpdate() {
       setEditorState(EditorState.createWithContent(contentState));
     }
   }, [thread, setValue, setEditorState]);
+
   return (
     <>
       <Box className="flex flex-row justify-between text-lg font-medium">
@@ -113,7 +114,7 @@ function ThreadUpdate() {
       </Box>
       <Box>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          {thread?.title && (
+          {thread?.post.title && (
             <Input
               id="title"
               label="Title"
@@ -124,7 +125,7 @@ function ThreadUpdate() {
               {...register('title')}
             />
           )}
-          {thread?.hashTag && (
+          {thread?.post.hashTag && (
             <Input
               id="hashTag"
               label="Hashtag"
