@@ -10,7 +10,7 @@ import ConfirmModal from '../../components/ConfirmModal';
 function Threads() {
   useFetchThreads();
 
-  const { threads, error, handleDelete } = useThreads();
+  const { threads, handleDelete } = useThreads();
 
   const [slug, setSlug] = useState(false);
 
@@ -41,7 +41,7 @@ function Threads() {
       },
       {
         Header: 'Title',
-        accessor: ({ post }) => post.title,
+        accessor: ({ post }) => post.title ?? '-',
         id: 'title',
       },
       {
@@ -83,7 +83,6 @@ function Threads() {
           <Button>Add Thread</Button>
         </Link>
       </Box>
-      {error && <Box>{error}</Box>}
       <Box className="flex flex-col">
         <Table columns={columns} data={threads} />
       </Box>

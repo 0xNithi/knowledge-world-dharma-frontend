@@ -10,9 +10,11 @@ import { useUsers } from '../../state/users/hook';
 function UserInfo() {
   const [user, setUser] = useState();
   const [isOpenBan, setIsOpenBan] = useState(false);
+  const [isOpenAdmin, setIsOpenAdmin] = useState(false);
   const [isOpenDelete, setIsOpenDelete] = useState(false);
 
-  const { error, handleView, handleDelete, handleBan } = useUsers();
+  const { error, handleView, handleDelete, handleBan, handleAdmin } =
+    useUsers();
   const { slug } = useParams();
 
   const handleOpenBan = useCallback(() => {
@@ -27,6 +29,19 @@ function UserInfo() {
     handleBan({ slug });
     handleCloseBan();
   }, [slug, handleCloseBan, handleBan]);
+
+  const handleOpenAdmin = useCallback(() => {
+    setIsOpenAdmin(true);
+  }, [setIsOpenAdmin]);
+
+  const handleCloseAdmin = useCallback(() => {
+    setIsOpenAdmin(false);
+  }, [setIsOpenAdmin]);
+
+  const handleConfirmAdmin = useCallback(() => {
+    handleAdmin({ slug });
+    handleCloseAdmin();
+  }, [slug, handleCloseAdmin, handleAdmin]);
 
   const handleOpenDelete = useCallback(() => {
     setIsOpenDelete(true);
@@ -53,6 +68,9 @@ function UserInfo() {
           <div className="flex flex-row gap-2">
             <Button onClick={handleOpenBan}>
               {user?.banned ? 'Unban' : 'Ban'}
+            </Button>
+            <Button onClick={handleOpenAdmin}>
+              {user?.role.toLowerCase() === 'admin' ? 'Set User' : 'Set Admin'}
             </Button>
             <Link to={`/user/update/${slug}`}>
               <Button>Update</Button>
@@ -116,6 +134,16 @@ function UserInfo() {
           content={`Do you really want to ${
             user?.banned ? 'unban' : 'ban'
           } this user?`}
+        />
+      )}
+      {isOpenAdmin && (
+        <ConfirmModal
+          isOpen={isOpenAdmin}
+          onRequestClose={handleCloseAdmin}
+          handleSubmit={handleConfirmAdmin}
+          content={`Do you really want to set ${
+            user?.role.toLowerCase() === 'admin' ? 'user' : 'admin'
+          } role this user?`}
         />
       )}
       {isOpenDelete && (

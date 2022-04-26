@@ -9,6 +9,7 @@ import {
   fetchUsers,
   fetchUpdateUser,
   fetchBanUser,
+  fetchAdminUser,
 } from '.';
 
 export const useFetchUsers = () => {
@@ -64,6 +65,13 @@ export const useUsers = () => {
     [accessToken, dispatch],
   );
 
+  const handleAdmin = useCallback(
+    ({ slug }) => {
+      dispatch(fetchAdminUser({ slug, accessToken }));
+    },
+    [accessToken, dispatch],
+  );
+
   useEffect(() => {
     dispatch(initializeAction());
   }, [dispatch]);
@@ -77,5 +85,6 @@ export const useUsers = () => {
     handleUpdate,
     handleDelete,
     handleBan,
+    handleAdmin,
   };
 };
