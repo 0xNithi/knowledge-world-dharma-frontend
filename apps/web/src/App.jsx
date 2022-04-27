@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import PostForm from './pages/PostForm';
 import Home from './pages/Home';
@@ -23,18 +23,13 @@ function App() {
   const [showSignupModal, setshowSignupModal] = useState(false);
   const [showmenu, setShowmenu] = useState(false);
   const [searchWord, setsearchWord] = useState('');
-  useEffect(() => {
-    if (user) {
-      if (user.banned) {
-        const root = document.getElementById('root');
-        root.classList.add('grayscale');
-      }
-    }
-  }, []);
 
   return (
-    <div className="relative w-full min-h-screen font-mono bg-gradient-to-b from-emerald-400 to-lime-200">
-      <div className="flex flex-col items-center w-full h-full">
+    <div
+      className="relative w-full min-h-screen font-mono bg-gradient-to-b from-emerald-400 to-lime-200 "
+      id="user"
+    >
+      <div className="flex flex-col items-center w-full h-full ">
         <Topbar
           showmenu={showmenu}
           changeMenuBarState={(data) => setShowmenu(data)}
@@ -65,16 +60,17 @@ function App() {
             {}
           </div>
         )}
-        {user && user.banned && (
-          <div className="absolute z-30 w-full h-full bg-black opacity-30">
-            {}
-          </div>
-        )}
+
         {showSignupModal && (
           <SignupModal
             showSignupModal={showSignupModal}
             changeSignupState={(word) => setshowSignupModal(word)}
           />
+        )}
+        {user && user.banned && (
+          <div className="absolute z-30 w-full h-full bg-black opacity-30">
+            {}
+          </div>
         )}
         {user && user.banned && <BanModal />}
 
